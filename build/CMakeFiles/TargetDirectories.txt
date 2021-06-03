@@ -1,0 +1,3 @@
+/Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/CMakeFiles/palgs.dir
+/Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/CMakeFiles/ALL_BUILD.dir
+/Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/CMakeFiles/ZERO_CHECK.dir

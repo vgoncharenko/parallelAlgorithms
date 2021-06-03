@@ -1,0 +1,9 @@
+Target dependency graph (5 targets)
+CompilerIdC in CompilerIdC
+CompilerIdCXX in CompilerIdCXX
+ZERO_CHECK in palgs
+palgs in palgs, depends on:
+ZERO_CHECK in palgs (explicit)
+ALL_BUILD in palgs, depends on:
+palgs in palgs (explicit)
+ZERO_CHECK in palgs (explicit)
