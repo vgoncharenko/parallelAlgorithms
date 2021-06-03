@@ -11,11 +11,11 @@ template<typename I, typename T>
 void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
                                                           const uint64_t size,
                                                           T pivot,
-                                                          std::shared_ptr<GlobalRearrangementResult<ScalarType>> globalResult){
+                                                          std::shared_ptr<GlobalRearrangementResult> globalResult){
 #ifdef MY_DEBUG
     std::printf("quickSortParallelLocalRearrangementWithStoreInGlobal size:%llu; pivot=%f\n", size, pivot);
 #endif
-    LocalRearrangementResult<ScalarType> local = quickSortParallelLocalRearrangement(begin, size, pivot);
+    LocalRearrangementResult local = quickSortParallelLocalRearrangement(begin, size, pivot);
     quickSortParallelGlobalRearrangement(local, globalResult);
 }
 
@@ -199,8 +199,8 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
     }
     auto pivot = getPivot(vInBegin, n);
     uint64_t batchSize = n/threadCount;
-    auto buffer = new ScalarType[n];
-    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult<ScalarType>>();
+    I buffer = new ScalarType[n];
+    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>();
     globalRearrangeResult->sBegin = buffer;
     globalRearrangeResult->sTail = buffer;
     //globalRearrangeResult->lBegin = buffer + n;

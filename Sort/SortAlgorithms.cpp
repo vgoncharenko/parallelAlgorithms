@@ -9,8 +9,18 @@
 #include "BitonicSort.cpp"
 #include "../measure.cpp"
 
+//auto getVector(const uint64_t n) {
+//    auto vector = new float [n];
+//
+//    for (int i = 0; i < n; ++i) {
+//        vector[i] = random() / MAXFLOAT;
+//    }
+//
+//    return vector;
+//}
+
 auto getVector(const uint64_t n) {
-    auto vector = new float [n];
+    auto vector = std::vector<float>(n);
 
     for (int i = 0; i < n; ++i) {
         vector[i] = random() / MAXFLOAT;
@@ -81,20 +91,20 @@ void sanityCheck()
     std::vector<float> expected(input.size());
     std::copy(input.begin(), input.end(), expected.begin());
     std::sort(expected.begin(), expected.end());
-    //testQuickSortWithStableThreadPoolParallel(input.begin(), input.size(), 5);
+    testQuickSortParallel(input.begin(), input.size(), 5);
     verifyVectors(expected, input, input.size());
 }
 
 void testVectorSort() {
 //    sanityCheck();return;
-    uint8_t iterations = 1;
+    uint8_t iterations = 20;
     uint8_t threadsCount = 16;
     auto W = new uint64_t[iterations];
-//    W[0] = 1024;
+    W[0] = 1024;
     //W[0] = 8589934592;
 //    W[0] = 2147483648;
 //    W[0] = 1073741824;
-    W[0] = 67108864;
+//    W[0] = 67108864;
 //    Fastest sequential
 //    6.10807,
 //    Quick parallel with more threads because of ceil:
@@ -114,9 +124,8 @@ void testVectorSort() {
         int idx=0;
         auto vIn = getVector(W[i]);
 #ifdef MY_TEST
-        auto expected = new float [W[i]];
-        std::copy(vIn, vIn + W[i], expected);
-        std::sort(expected, expected + W[i]);
+        auto expected = std::vector<float>(vIn);
+        std::sort(expected.begin(), expected.end());
 #endif
 
 //        labels[idx] = "Serial\n";
@@ -188,17 +197,16 @@ void testVectorSort() {
  */
 //        labels[idx] = "Fastest sequential \n";
 //#ifdef MY_TEST
-//        auto vOutFastestSerial = new float [W[i]];
-//        std::copy(vIn, vIn + W[i], vOutFastestSerial);
+//        auto vOutFastestSerial = std::vector<float>(vIn);
 //#else
 //        auto vOutFastestSerial = vIn;
 //#endif
 //        measure([&W, &vOutFastestSerial, i] {
-//            std::sort(vOutFastestSerial, vOutFastestSerial+W[i]);
+//            std::sort(vOutFastestSerial.begin(), vOutFastestSerial.begin()+W[i]);
 //        }, results[idx++], 1, "seconds", "to_var");
 //#ifdef MY_TEST
 //        verifyVectors(expected, vOutFastestSerial, W[i]);
-//        delete [] vOutFastestSerial;
+////        delete [] vOutFastestSerial;
 //#endif
 
 //        labels[idx] = "Quick sequential:\n";
@@ -218,21 +226,24 @@ void testVectorSort() {
 
 /**
  * Very memory unefficient:
+ *      pointers:
+ *      0) N=67108864; p=16 => Tp=6.15065s;
  *      1) N=1073741824; p=16 => mem=43Gb; swap=30Gb; and Tp=180.757s;
+ *      vector:
+ *      0) N=67108864; p=16 => Tp=8.30686s;
+ *      1) N=1073741824; p=16 => mem=32Gb; swap=20Gb; and Tp=321.096s;
  */
         labels[idx] = "Quick parallel:\n";
 #ifdef MY_TEST
-        auto vOutQuickParallel = new float [W[i]];
-        std::copy(vIn, vIn + W[i], vOutQuickParallel);
+        auto vOutQuickParallel = std::vector<float>(vIn);
 #else
         auto vOutQuickParallel = vIn;
 #endif
         measure([&W, &vOutQuickParallel, i, threadsCount] {
-            testQuickSortParallel(vOutQuickParallel, W[i], threadsCount);
+            testQuickSortParallel(vOutQuickParallel.begin(), W[i], threadsCount);
         }, results[idx++], 1, "seconds", "to_var");
 #ifdef MY_TEST
-        verifyVectors(expected, vOutQuickParallel, W[i]);
-        delete [] vOutQuickParallel;
+        verifyVectors(expected, vOutQuickParallel, W[i])
 #endif
 
 //        labels[idx] = "Quick parallel with persistent thread pool:\n";
@@ -250,7 +261,6 @@ void testVectorSort() {
 //        delete [] vOutQuickPersistentThreadPoolParallel;
 //#endif
 
-        delete [] vIn;
     }
 
     for (size_t i=0; i<results.size(); ++i) {

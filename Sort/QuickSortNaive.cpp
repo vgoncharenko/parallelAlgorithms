@@ -5,6 +5,7 @@
 //  Created by Vitaliy on 01.06.2021.
 //
 
+#include <iterator>
 #include <iostream>
 #include <exception>
 #include <complex.h>
@@ -69,44 +70,32 @@ void testQuickSerial(I vInBegin, const uint64_t n){
     testQuickSerial(vInBegin + (l - pivot) + 1, r - (vInBegin + (l - pivot) + 1));
 }
 
+typedef float ScalarType;
+typedef std::vector<ScalarType>::iterator I;
+
 template<typename I>
 auto getPivot(I vInBegin, const uint64_t n) {
     return *(vInBegin+(rand() % n));
 }
 
-template<typename T>
 struct LocalRearrangementResult
 {
-    T* S;
-    long s_count;
-    T* L;
-    long l_count;
+    std::vector<ScalarType> S;
+    uint64_t s_count;
+    std::vector<ScalarType> L;
+    uint64_t l_count;
+    
+    LocalRearrangementResult() {}
 
-    LocalRearrangementResult() {
-        S = nullptr;
+    LocalRearrangementResult(size_t size) {
+        S = std::vector<ScalarType>(size);
         s_count = 0;
-        L = nullptr;
+        L = std::vector<ScalarType>(size);
         l_count = 0;
     }
 
-    LocalRearrangementResult(T* _S, long _s_count, T* _L, long _l_count) {
-        S = new T [_s_count];
-        std::move(_S, _S + _s_count, this->S);
-        s_count = _s_count;
-
-        L = new T [_l_count];
-        l_count = _l_count;
-        std::move(_L, _L + _l_count, this->L);
-//        printf("Copy constructor of LocalRearrangementResult");
-    }
-//
-//    LocalRearrangementResult(T&& _Sv1, long _s_count, T&& _Lv1, long _l_count) {
-//        S = std::move(_Sv1);
-//        s_count = _s_count;
-//        L = std::move(_Lv1);
-//        l_count = _l_count;
-//        printf("Move constructor of LocalRearrangementResult");
-//    }
+    LocalRearrangementResult(std::vector<ScalarType>&& _S, size_t _s_count, std::vector<ScalarType>&& _L, size_t _l_count)
+    : S(std::move(_S)), s_count(_s_count), L(std::move(_L)), l_count(_l_count) {}
     
 //    ~LocalRearrangementResult(){
 //        delete[] S;
@@ -114,25 +103,30 @@ struct LocalRearrangementResult
 //    }
 };
 
-template<typename T>
 struct GlobalRearrangementResult
 {
 public:
-    T* sBegin;
-    T* sTail;
+    std::vector<ScalarType> contaier;
+    I sBegin;
+    I sTail;
     std::mutex sMutex;
 
     //T* lBegin;
-    T* lTail;
+    I lTail;
     std::mutex lMutex;
+    
+    GlobalRearrangementResult(size_t size) {
+        contaier = std::vector<ScalarType>(size);
+        sBegin = contaier.begin();
+        sTail = contaier.begin();
+        lTail = contaier.end();
+    }
 };
 
-typedef float ScalarType;
-typedef std::future<LocalRearrangementResult<ScalarType>> LocalRearrangementFuture;
-typedef LocalRearrangementResult<ScalarType> ThreadPoolResultSample;
+typedef std::future<LocalRearrangementResult> LocalRearrangementFuture;
 
-typedef void ThreadPoolCallbackFunction(LocalRearrangementResult<ScalarType> localResult,
-                                        std::shared_ptr<GlobalRearrangementResult<ScalarType>> globalResult);
+typedef void ThreadPoolCallbackFunction(LocalRearrangementResult localResult,
+                                        std::shared_ptr<GlobalRearrangementResult> globalResult);
 typedef std::future<void> ThreadPoolCallbackFuture;
 typedef std::future<void> PersistentThreadPoolFuture;
 typedef int ThreadId;
@@ -154,14 +148,15 @@ class NotCopyable: public std::exception
     }
 } notCopyableException;
 
-template<typename I, typename T>
-LocalRearrangementResult<ScalarType> quickSortParallelLocalRearrangement(I begin, const uint64_t size, T pivot){
-    T* S = new T[size];
-    T* L = new T[size];
+template<typename T>
+LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint64_t size, T pivot){
+    auto result = LocalRearrangementResult(size);
+    auto S = result.S.begin();
+    auto L = result.L.begin();
 
     I end = begin + size;
-    T* curS = S;
-    T* curL = L;
+    auto curS = S;
+    auto curL = L;
     while (begin < end) {
         if (*begin <= pivot) {
             *curS = *begin;
@@ -172,16 +167,19 @@ LocalRearrangementResult<ScalarType> quickSortParallelLocalRearrangement(I begin
         }
         ++begin;
     }
+    
+    result.s_count = curS - S;
+    result.l_count = curL - L;
 
-    auto result = LocalRearrangementResult<ScalarType>{S, curS - S, L, curL - L};
-    delete [] S;
-    delete [] L;
+//    auto result = LocalRearrangementResult{std::move(Vs), static_cast<size_t>(curS - S), std::move(Vl), static_cast<size_t>(curL - L)};
+//    delete [] S;
+//    delete [] L;
     
     return result;
 }
 
-void quickSortParallelGlobalRearrangement(LocalRearrangementResult<ScalarType> localResult,
-                                          std::shared_ptr<GlobalRearrangementResult<ScalarType>> globalResult){
+void quickSortParallelGlobalRearrangement(LocalRearrangementResult localResult,
+                                          std::shared_ptr<GlobalRearrangementResult> globalResult){
     if (localResult.s_count > 0) {
         std::unique_lock<std::mutex> sLock(globalResult->sMutex);
         auto localBegin = globalResult->sTail;
@@ -191,7 +189,7 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult<ScalarType> l
         std::copy(localResult.S, localResult.S + localResult.s_count, localBegin);
 #else
 //        localBegin = localResult.S;
-        std::move(localResult.S, localResult.S + localResult.s_count, localBegin);
+        std::move(localResult.S.begin(), localResult.S.begin() + localResult.s_count, localBegin);
 #endif
     }
 
@@ -204,7 +202,7 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult<ScalarType> l
         std::copy(localResult.L, localResult.L + localResult.l_count, localBegin);
 #else
 //        localBegin = localResult.L;
-        std::move(localResult.L, localResult.L + localResult.l_count, localBegin);
+        std::move(localResult.L.begin(), localResult.L.begin() + localResult.l_count, localBegin);
 #endif
     }
 }
@@ -227,13 +225,13 @@ private:
     const uint8_t maxSize;
     std::atomic<int> count = 0;
     std::condition_variable isAvailable;
-    std::vector<ThreadPoolResultSample> resultSet;
+    std::vector<LocalRearrangementResult> resultSet;
     ThreadPoolCallbackFunction *callbackFunction;
 
 public:
     explicit ThreadPool (uint8_t _maxSize, ThreadPoolCallbackFunction *_callback)
     : maxSize(_maxSize), callbackFunction(_callback) {
-        resultSet = std::vector<ThreadPoolResultSample>(maxSize);
+        resultSet = std::vector<LocalRearrangementResult>(maxSize);
     };
 
     template<class F, class... Args>
@@ -271,7 +269,7 @@ public:
                 this->count.fetch_sub(1, std::memory_order_acq_rel);
                 ThreadPoolCallbackFuture fut = std::async(std::launch::async,
                                                           callbackFunction,
-                                                          std::forward<ThreadPoolResultSample>(resultSet[t.id]),
+                                                          std::forward<LocalRearrangementResult>(resultSet[t.id]),
                                                           std::forward<callbackArgs&&>(args)...);
                 callbackQueue.emplace(ThreadCallbackSample{t.id, std::move(fut)});
 #ifdef MY_DEBUG
@@ -299,7 +297,6 @@ public:
     }
 };
 
-template<typename I>
 void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCount){
 #ifdef MY_DEBUG
     std::printf("Start testQuickSortParallel N:%llu; threadCount:%d\n", n, threadCount);
@@ -311,11 +308,11 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
     auto pivot = getPivot(vInBegin, n);
     uint64_t batchSize = n/threadCount;
     //auto buffer = new ScalarType[n];
-    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult<ScalarType>>();
-    globalRearrangeResult->sBegin = vInBegin;
-    globalRearrangeResult->sTail = vInBegin;
+    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(n);
+//    globalRearrangeResult->sBegin = vInBegin;
+//    globalRearrangeResult->sTail = vInBegin;
     //globalRearrangeResult->lBegin = buffer + n;
-    globalRearrangeResult->lTail = vInBegin + n;
+//    globalRearrangeResult->lTail = vInBegin + n;
     auto maxThreadCount = n % threadCount ? threadCount + 1 : threadCount;
     auto threadPool = std::make_unique<ThreadPool>(maxThreadCount, quickSortParallelGlobalRearrangement);
 
@@ -324,7 +321,7 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
     auto cursor = vInBegin;
     while (cursor < end) {
         int curBatchSize = (2*batchSize < (end - cursor)) ? batchSize : (end - cursor);
-        threadPool->runThread(quickSortParallelLocalRearrangement<I, ScalarType>, i, cursor, curBatchSize, pivot);
+        threadPool->runThread(quickSortParallelLocalRearrangement<ScalarType>, i, cursor, curBatchSize, pivot);
         if (cursor + curBatchSize == end) break;
         ++i;
         cursor += batchSize;
@@ -334,7 +331,7 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
 
     size_t sSize = globalRearrangeResult->sTail - globalRearrangeResult->sBegin;
     int8_t sThreadCount = round(threadCount * (float(sSize) / n));
-    std::thread t{testQuickSortParallel<ScalarType*>, globalRearrangeResult->sBegin, sSize, sThreadCount};
+    std::thread t{testQuickSortParallel, globalRearrangeResult->sBegin, sSize, sThreadCount};
     testQuickSortParallel(globalRearrangeResult->lTail, n - sSize, threadCount - sThreadCount);
     t.join();
 #ifdef MY_NOT_MOVABLE
