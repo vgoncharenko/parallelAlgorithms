@@ -3,4 +3,86 @@
    uuid = "9B181E33-08C6-4C70-9181-F9599585F28F"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "727F884B-BC3E-43B2-9688-F0C0C4593215"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sort/QuickSortNaive.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "345"
+            endingLineNumber = "345"
+            landmarkName = "testQuickSortParallel(vInBegin, n, threadCount)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sort/QuickSortNaive.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "runThread(f, threadId, args)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - cdb3a158496941a7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), signed char, std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)"
+                  moduleName = "palgs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "94">
+               </Location>
+               <Location
+                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 2bb0b7a619b5e02"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), signed char, std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)::&apos;lambda&apos;()::operator()() const"
+                  moduleName = "palgs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "247"
+                  endingLineNumber = "247"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B1C26392-23CD-4408-BCC7-CCEB7E22EB2B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sort/QuickSortNaive.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "299"
+            endingLineNumber = "299"
+            landmarkName = "waitForThreads(barrier, args)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

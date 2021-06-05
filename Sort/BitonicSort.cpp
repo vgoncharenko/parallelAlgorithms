@@ -4,6 +4,9 @@
 //
 //  Created by Vitaliy on 01.06.2021.
 //
+#ifndef BitonicSort_hpp
+#define BitonicSort_hpp
+
 #include <iostream>
 #include <exception>
 #include <complex.h>
@@ -16,6 +19,7 @@
 #include <stdint.h>
 #include <algorithm>
 #include <queue>
+#include "BlockBarrier.cpp"
 
 auto asc = [](auto const it1, auto const it2) {return *it1 > *it2;};
 auto desc = [](auto const it1, auto const it2) {return *it1 < *it2;};
@@ -74,41 +78,6 @@ void bitonicSort(I begin, const uint64_t n) {
         }
     }
 }
-class BlockBarrier {
-private:
-    int count = 0;
-    uint64_t infLimit;
-public:
-    std::condition_variable condition;
-    mutable std::mutex m;
-    bool syncAllowed = false;
-
-    explicit BlockBarrier (const uint64_t _infLimit) : infLimit(_infLimit) {};
-
-    BlockBarrier& operator++ () {
-        {
-            std::scoped_lock lk(m);
-            ++count;
-            if (infLimit > count) return *this;
-        }
-
-        if (infLimit <= count) {
-            {
-                std::scoped_lock lk(m);
-                syncAllowed = true;
-            }
-            condition.notify_all();
-        }
-
-        return *this;
-    }
-
-    void reset() {
-        std::scoped_lock lk(m);
-        count = 0;
-        syncAllowed = false;
-    }
-};
 
 // O(n)
 template<typename T>
@@ -466,3 +435,5 @@ template<typename I>
 void testBitonicSortParallel(I vInBegin, const uint64_t n, const uint8_t threadCount) {
     bitonicSortParallel(vInBegin, n, threadCount);
 }
+
+#endif /* BitonicSort_hpp */

@@ -4,6 +4,8 @@
 //
 //  Created by Vitaliy on 31.05.2021.
 //
+#ifndef SortAlgorithms_hpp
+#define SortAlgorithms_hpp
 
 #include "QuickSort.cpp"
 #include "BitonicSort.cpp"
@@ -85,9 +87,9 @@ void sanityCheck()
 {
 //    std::vector<int> input = {3,5,8,9,10,12,14,20,95,90,60,40,35,23,18,0};
 //    std::vector<float> input = {10,20,5,9,3,8,12,14,90,0,60,40,23,35,95,18};
-//    std::vector<float> input = {223,108,1010,117,18,101,111,115,116,103,105,113,114,10,20,5,9,3,8,12,14,90,0,60,40,23,35,95,106,112,118,119};
+    std::vector<float> input = {223,108,1010,117,18,101,111,115,116,103,105,113,114,10,20,5,9,3,8,12,14,90,0,60,40,23,35,95,106,112,118,119};
 //    std::vector<float> input = {10,8,4,1,7,2,11,3,6};
-    std::vector<float> input = {7,13,18,2,17,1,14,20,6,10,15,9,3,16,19,4,11,12,5,8};
+//    std::vector<float> input = {7,13,18,2,17,1,14,20,6,10,15,9,3,16,19,4,11,12,5,8};
     std::vector<float> expected(input.size());
     std::copy(input.begin(), input.end(), expected.begin());
     std::sort(expected.begin(), expected.end());
@@ -97,13 +99,13 @@ void sanityCheck()
 
 void testVectorSort() {
 //    sanityCheck();return;
-    uint8_t iterations = 20;
+    uint8_t iterations = 1;
     uint8_t threadsCount = 16;
     auto W = new uint64_t[iterations];
-    W[0] = 1024;
+//    W[0] = 1024;
     //W[0] = 8589934592;
 //    W[0] = 2147483648;
-//    W[0] = 1073741824;
+    W[0] = 1073741824;
 //    W[0] = 67108864;
 //    Fastest sequential
 //    6.10807,
@@ -230,36 +232,40 @@ void testVectorSort() {
  *      0) N=67108864; p=16 => Tp=6.15065s;
  *      1) N=1073741824; p=16 => mem=43Gb; swap=30Gb; and Tp=180.757s;
  *      vector:
- *      0) N=67108864; p=16 => Tp=8.30686s;
- *      1) N=1073741824; p=16 => mem=32Gb; swap=20Gb; and Tp=321.096s;
+ *      0) N=67108864; p=16 => Tp=4.23539s;
+ *      1) N=1073741824; p=16 => mem=32Gb; swap=20Gb; and Tp=51.2962s;
  */
-        labels[idx] = "Quick parallel:\n";
-#ifdef MY_TEST
-        auto vOutQuickParallel = std::vector<float>(vIn);
-#else
-        auto vOutQuickParallel = vIn;
-#endif
-        measure([&W, &vOutQuickParallel, i, threadsCount] {
-            testQuickSortParallel(vOutQuickParallel.begin(), W[i], threadsCount);
-        }, results[idx++], 1, "seconds", "to_var");
-#ifdef MY_TEST
-        verifyVectors(expected, vOutQuickParallel, W[i])
-#endif
-
-//        labels[idx] = "Quick parallel with persistent thread pool:\n";
+//        labels[idx] = "Quick parallel:\n";
 //#ifdef MY_TEST
-//        auto vOutQuickPersistentThreadPoolParallel = new float [W[i]];
-//        std::copy(vIn, vIn + W[i], vOutQuickPersistentThreadPoolParallel);
+//        auto vOutQuickParallel = std::vector<float>(vIn);
 //#else
-//        auto vOutQuickPersistentThreadPoolParallel = vIn;
+//        auto vOutQuickParallel = vIn;
 //#endif
-//        measure([&W, &vOutQuickPersistentThreadPoolParallel, i, threadsCount] {
-//            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel, W[i], threadsCount);
+//        measure([&W, &vOutQuickParallel, i, threadsCount] {
+//            testQuickSortParallel(vOutQuickParallel.begin(), W[i], threadsCount);
 //        }, results[idx++], 1, "seconds", "to_var");
 //#ifdef MY_TEST
-//        verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);
-//        delete [] vOutQuickPersistentThreadPoolParallel;
+//        verifyVectors(expected, vOutQuickParallel, W[i]);
 //#endif
+
+        /**
+         *      vector:
+         *      0) N=67108864; p=16 => Tp=7.23539s;
+         *      1) N=1073741824; p=16 => mem=8Gb; Tp=165.769s;
+         */
+        labels[idx] = "Quick parallel with persistent thread pool:\n";
+#ifdef MY_TEST
+        auto vOutQuickPersistentThreadPoolParallel = std::vector<float>(vIn);
+#else
+        auto vOutQuickPersistentThreadPoolParallel = vIn;
+#endif
+        measure([&W, &vOutQuickPersistentThreadPoolParallel, i, threadsCount] {
+            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel.begin(), W[i], threadsCount);
+        }, results[idx++], 1, "seconds", "to_var");
+#ifdef MY_TEST
+        verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);
+        //delete [] vOutQuickPersistentThreadPoolParallel;
+#endif
 
     }
 
@@ -273,3 +279,4 @@ void testVectorSort() {
     delete [] W;
 }
 
+#endif /** SortAlgorithms_hpp */

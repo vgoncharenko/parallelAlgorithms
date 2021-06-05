@@ -4,6 +4,8 @@
 //
 //  Created by Vitaliy on 01.06.2021.
 //
+#ifndef QuickSortNaive_hpp
+#define QuickSortNaive_hpp
 
 #include <iterator>
 #include <iostream>
@@ -18,6 +20,7 @@
 #include <stdint.h>
 #include <algorithm>
 #include <queue>
+#include "BlockBarrier.cpp"
 
 //template<typename I>
 //void testQuickSerial(I vInBegin, const uint64_t n){
@@ -106,7 +109,6 @@ struct LocalRearrangementResult
 struct GlobalRearrangementResult
 {
 public:
-    std::vector<ScalarType> contaier;
     I sBegin;
     I sTail;
     std::mutex sMutex;
@@ -115,11 +117,10 @@ public:
     I lTail;
     std::mutex lMutex;
     
-    GlobalRearrangementResult(size_t size) {
-        contaier = std::vector<ScalarType>(size);
-        sBegin = contaier.begin();
-        sTail = contaier.begin();
-        lTail = contaier.end();
+    GlobalRearrangementResult(I vBegin, size_t size) {
+        sBegin = vBegin;
+        sTail = vBegin;
+        lTail = vBegin + size;
     }
 };
 
@@ -129,6 +130,7 @@ typedef void ThreadPoolCallbackFunction(LocalRearrangementResult localResult,
                                         std::shared_ptr<GlobalRearrangementResult> globalResult);
 typedef std::future<void> ThreadPoolCallbackFuture;
 typedef std::future<void> PersistentThreadPoolFuture;
+typedef uint64_t UUID;
 typedef int ThreadId;
 typedef LocalRearrangementFuture ThreadPoolFuture;
 
@@ -149,23 +151,24 @@ class NotCopyable: public std::exception
 } notCopyableException;
 
 template<typename T>
-LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint64_t size, T pivot){
+LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint64_t size, T pivot, BlockBarrier *barrier){
     auto result = LocalRearrangementResult(size);
     auto S = result.S.begin();
     auto L = result.L.begin();
-
-    I end = begin + size;
+    
+    I start = begin;
+    I end = start + size;
     auto curS = S;
     auto curL = L;
-    while (begin < end) {
-        if (*begin <= pivot) {
-            *curS = *begin;
+    while (start < end) {
+        if (*start <= pivot) {
+            *curS = *start;
             ++curS;
         } else {
-            *curL = *begin;
+            *curL = *start;
             ++curL;
         }
-        ++begin;
+        ++start;
     }
     
     result.s_count = curS - S;
@@ -174,6 +177,11 @@ LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint
 //    auto result = LocalRearrangementResult{std::move(Vs), static_cast<size_t>(curS - S), std::move(Vl), static_cast<size_t>(curL - L)};
 //    delete [] S;
 //    delete [] L;
+    
+    // sync with other threads, then perform stage 2
+    // add one pass to barrier
+    barrier->operator++();
+    barrier->condition.notify_one();
     
     return result;
 }
@@ -188,7 +196,6 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult localResult,
 #ifdef MY_NOT_MOVABLE
         std::copy(localResult.S, localResult.S + localResult.s_count, localBegin);
 #else
-//        localBegin = localResult.S;
         std::move(localResult.S.begin(), localResult.S.begin() + localResult.s_count, localBegin);
 #endif
     }
@@ -201,7 +208,6 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult localResult,
 #ifdef MY_NOT_MOVABLE
         std::copy(localResult.L, localResult.L + localResult.l_count, localBegin);
 #else
-//        localBegin = localResult.L;
         std::move(localResult.L.begin(), localResult.L.begin() + localResult.l_count, localBegin);
 #endif
     }
@@ -237,7 +243,7 @@ public:
     template<class F, class... Args>
     void runThread(F&& f, int8_t threadId, Args&&... args) {
         std::unique_lock<std::mutex> blockM1Lock(m);
-        std::chrono::milliseconds span (100);
+        std::chrono::milliseconds span (2);
         if (isAvailable.wait_for(blockM1Lock, span, [this] { return this->maxSize > this->count; })) {
             count.fetch_add(1, std::memory_order_relaxed);
         } else {
@@ -252,11 +258,11 @@ public:
     }
 
     template<class... callbackArgs>
-    void waitForThreads(callbackArgs&&... args) {
+    void waitForThreads(BlockBarrier* barrier, callbackArgs&&... args) {
         while (!queue.empty()) {
             ThreadSample t = std::move(queue.front());
             queue.pop();
-            std::chrono::milliseconds span (100);
+            std::chrono::milliseconds span (2);
             auto res = t.f.wait_for(span);
 
             if (res == std::future_status::timeout) {
@@ -265,6 +271,9 @@ public:
 #ifdef MY_DEBUG
                 std::printf("Finish threadId %d\n", t.id);
 #endif
+                // wait for all threads to finish 1 stage
+                std::unique_lock<std::mutex> blockM1Lock(barrier->m);
+                barrier->condition.wait(blockM1Lock, [&barrier] { return barrier->syncAllowed; });
                 resultSet[t.id] = t.f.get();
                 this->count.fetch_sub(1, std::memory_order_acq_rel);
                 ThreadPoolCallbackFuture fut = std::async(std::launch::async,
@@ -281,7 +290,7 @@ public:
         while (!callbackQueue.empty()) {
             ThreadCallbackSample t = std::move(callbackQueue.front());
             callbackQueue.pop();
-            std::chrono::milliseconds span (100);
+            std::chrono::milliseconds span (2);
             auto res = t.f.wait_for(span);
 
             if (res == std::future_status::timeout) {
@@ -308,26 +317,28 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
     auto pivot = getPivot(vInBegin, n);
     uint64_t batchSize = n/threadCount;
     //auto buffer = new ScalarType[n];
-    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(n);
+    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(vInBegin, n);
 //    globalRearrangeResult->sBegin = vInBegin;
 //    globalRearrangeResult->sTail = vInBegin;
     //globalRearrangeResult->lBegin = buffer + n;
 //    globalRearrangeResult->lTail = vInBegin + n;
     auto maxThreadCount = n % threadCount ? threadCount + 1 : threadCount;
     auto threadPool = std::make_unique<ThreadPool>(maxThreadCount, quickSortParallelGlobalRearrangement);
-
+    auto barrier = new BlockBarrier(maxThreadCount);
+    
     int8_t i = 0;
     auto end = vInBegin + n;
     auto cursor = vInBegin;
     while (cursor < end) {
         int curBatchSize = (2*batchSize < (end - cursor)) ? batchSize : (end - cursor);
-        threadPool->runThread(quickSortParallelLocalRearrangement<ScalarType>, i, cursor, curBatchSize, pivot);
+        threadPool->runThread(quickSortParallelLocalRearrangement<ScalarType>, i, cursor, curBatchSize, pivot, barrier);
         if (cursor + curBatchSize == end) break;
         ++i;
         cursor += batchSize;
     }
 
-    threadPool->waitForThreads(globalRearrangeResult);
+    barrier->infLimit = i+1;
+    threadPool->waitForThreads(barrier, globalRearrangeResult);
 
     size_t sSize = globalRearrangeResult->sTail - globalRearrangeResult->sBegin;
     int8_t sThreadCount = round(threadCount * (float(sSize) / n));
@@ -339,10 +350,12 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
 #else
     //delete[] vInBegin;
     //vInBegin = globalRearrangeResult->sBegin;
-    std::move(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
+    //std::move(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
     //delete [] buffer;
 #endif
 #ifdef MY_DEBUG
     std::printf("End testQuickSortParallel N:%llu; threadCount:%d\n", n, threadCount);
 #endif
 }
+
+#endif /* QuickSortNaive_hpp */
