@@ -17,7 +17,7 @@ add_executable(palgs main.cpp ${SOURCE_FILES} ${INCLUDE_FILES})
 
 #add_definitions(-DMY_DEBUG)
 #add_definitions(-DMY_NOT_MOVABLE)
-add_definitions(-DMY_TEST)
+#add_definitions(-DMY_TEST)
 #add_definitions(-DMY_VECTOR_VERSION)
 #profiling
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")

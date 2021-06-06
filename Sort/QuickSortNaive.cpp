@@ -74,7 +74,12 @@ void testQuickSerial(I vInBegin, const uint64_t n){
 }
 
 typedef float ScalarType;
+
+#ifdef MY_VECTOR_VERSION
 typedef std::vector<ScalarType>::iterator I;
+#else
+typedef ScalarType* I;
+#endif
 
 template<typename I>
 auto getPivot(I vInBegin, const uint64_t n) {
@@ -83,22 +88,49 @@ auto getPivot(I vInBegin, const uint64_t n) {
 
 struct LocalRearrangementResult
 {
+#ifdef MY_VECTOR_VERSION
     std::vector<ScalarType> S;
-    uint64_t s_count;
     std::vector<ScalarType> L;
+#else
+    ScalarType* S;
+    ScalarType* L;
+#endif
+    uint64_t s_count;
     uint64_t l_count;
+    uint64_t size;
     
     LocalRearrangementResult() {}
 
-    LocalRearrangementResult(size_t size) {
-        S = std::vector<ScalarType>(size);
+    LocalRearrangementResult(size_t _size) : size(_size) {
+#ifdef MY_VECTOR_VERSION
+        S = std::vector<ScalarType>(_size);
+        L = std::vector<ScalarType>(_size);
+#else
+        S = new ScalarType[_size];
+        L = new ScalarType[_size];
+#endif
         s_count = 0;
-        L = std::vector<ScalarType>(size);
         l_count = 0;
     }
+    
+    I getSBegin() {
+#ifdef MY_VECTOR_VERSION
+        return S.begin();
+#else
+        return S;
+#endif
+    }
+    
+    I getLBegin() {
+#ifdef MY_VECTOR_VERSION
+        return L.begin();
+#else
+        return L;
+#endif
+    }
 
-    LocalRearrangementResult(std::vector<ScalarType>&& _S, size_t _s_count, std::vector<ScalarType>&& _L, size_t _l_count)
-    : S(std::move(_S)), s_count(_s_count), L(std::move(_L)), l_count(_l_count) {}
+//    LocalRearrangementResult(std::vector<ScalarType>&& _S, size_t _s_count, std::vector<ScalarType>&& _L, size_t _l_count)
+//    : S(std::move(_S)), s_count(_s_count), L(std::move(_L)), l_count(_l_count) {}
     
 //    ~LocalRearrangementResult(){
 //        delete[] S;
@@ -161,8 +193,8 @@ LocalRearrangementResult quickSortParallelLocalRearrangement(I begin,
                                                              BlockBarrier *barrier){
     auto result = LocalRearrangementResult(size);
     
-    auto S = result.S.begin();
-    auto L = result.L.begin();
+    auto S = result.getSBegin();
+    auto L = result.getLBegin();
     
     I start = begin;
     I end = start + size;
@@ -200,7 +232,7 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult &localResult,
 #ifdef MY_NOT_MOVABLE
         std::copy(localResult.S, localResult.S + localResult.s_count, localBegin);
 #else
-        std::copy(localResult.S.begin(), localResult.S.begin() + localResult.s_count, localBegin);
+        std::copy(localResult.getSBegin(), localResult.getSBegin() + localResult.s_count, localBegin);
 #endif
     }
 
@@ -212,7 +244,7 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult &localResult,
 #ifdef MY_NOT_MOVABLE
         std::copy(localResult.L, localResult.L + localResult.l_count, localBegin);
 #else
-        std::copy(localResult.L.begin(), localResult.L.begin() + localResult.l_count, localBegin);
+        std::copy(localResult.getLBegin(), localResult.getLBegin() + localResult.l_count, localBegin);
 #endif
     }
 }
@@ -222,10 +254,10 @@ void quickSortParallelLocalRearrangement(I begin,
                                          ScalarType pivot,
                                          LocalRearrangementResult& result,
                                          std::shared_ptr<GlobalRearrangementResult> globalResult){
-    auto S = result.S.begin();
-    auto L = result.L.begin();
+    auto S = result.getSBegin();
+    auto L = result.getLBegin();
     bool intermediateFlushPossible = false;
-    auto resultBufferSize = result.S.size();
+    auto resultBufferSize = result.size;
     if (size > resultBufferSize) {
         intermediateFlushPossible = true;
     }

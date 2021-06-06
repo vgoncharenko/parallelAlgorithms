@@ -12,8 +12,8 @@
 #include "ThreadPool/PersistentThreadPool.cpp"
 
 const float MAX_ASSIGNET_WORK_ON_THREAD = 1.25;
-const float BATCH_SIZE = 67108864; //6;
-const float LOCAL_SORT_MAX_BATCH_SIZE = 8388608; //2;
+const uint64_t BATCH_SIZE = 67108864; //6; //6000000;
+const uint64_t LOCAL_SORT_MAX_BATCH_SIZE = 8388608; //2; //2000000
 
 void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
                                                           const uint64_t size,
@@ -85,10 +85,10 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
     std::copy(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
 #else
 //    vInBegin = globalRearrangeResult->sBegin;
-    // TODO: a lot double copies on each recursion back and forth. Better to return the last actual as a ref o result set.
-    std::copy(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
-//    I tmp = globalRearrangeResult->sBegin;
-//    globalRearrangeResult->sBegin = vInBegin;
+    // TODO: a lot double copies on each recursion back and forth. Better to return the last actual as a ref on result set.
+    std::copy(bufferBegin, bufferBegin + n, vInBegin);
+//    I tmp = bufferBegin;
+//    bufferBegin = vInBegin;
 //    vInBegin = tmp;
 #endif
 #ifdef MY_DEBUG
@@ -99,10 +99,16 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
 void testQuickSortWithStableThreadPoolParallel(I vInBegin,
                                                const uint64_t n,
                                                const int8_t threadCount) {
+#ifdef MY_VECTOR_VERSION
     auto globalBuffer = std::vector<ScalarType>(n);
+    auto globalBufferBegin = globalBuffer.begin();
+#else
+    auto globalBuffer = new ScalarType [n];
+    auto globalBufferBegin = globalBuffer;
+#endif
     uint8_t tCount = threadCount > n/BATCH_SIZE ? n/BATCH_SIZE : threadCount;
     auto threadPool = std::make_shared<PersistentThreadPool>(tCount, LOCAL_SORT_MAX_BATCH_SIZE);
-    quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer.begin());
+    quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer);
 }
 
 

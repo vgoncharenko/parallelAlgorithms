@@ -22,7 +22,11 @@
 //}
 
 auto getVector(const uint64_t n) {
+#ifdef MY_VECTOR_VERSION
     auto vector = std::vector<float>(n);
+#else
+    auto vector = new float [n];
+#endif
 
     for (int i = 0; i < n; ++i) {
         vector[i] = random() / MAXFLOAT;
@@ -85,6 +89,9 @@ void testBubbleOddEvenTranspositionParallel(I vInBegin, const uint64_t n, const 
 
 void sanityCheck()
 {
+#ifndef MY_VECTOR_VERSION
+    printf("please define MY_VECTOR_VERSION for this test");
+#else
 //    std::vector<int> input = {3,5,8,9,10,12,14,20,95,90,60,40,35,23,18,0};
 //    std::vector<float> input = {10,20,5,9,3,8,12,14,90,0,60,40,23,35,95,18};
     std::vector<float> input = {223,108,1010,117,18,101,111,115,116,103,105,113,114,10,20,5,9,3,8,12,14,90,0,60,40,23,35,95,106,112,118,119};
@@ -95,6 +102,7 @@ void sanityCheck()
     std::sort(expected.begin(), expected.end());
     testQuickSortWithStableThreadPoolParallel(input.begin(), input.size(), 5);
     verifyVectors(expected, input, input.size());
+#endif
 }
 
 void testVectorSort() {
@@ -102,12 +110,12 @@ void testVectorSort() {
     uint8_t iterations = 1;
     uint8_t threadsCount = 16;
     auto W = new uint64_t[iterations];
-    //W[0] = 1024;
+//    W[0] = 1024;
     //W[0] = 8589934592;
 //    W[0] = 2147483648;
-//    W[0] = 1073741824;
-    W[0] = 67108864;
-//    W[0] = 67108
+    W[0] = 1073741824;
+//    W[0] = 67108864;
+//    W[0] = 67108;
 //    Fastest sequential
 //    6.10807,
 //    Quick parallel with more threads because of ceil:
@@ -127,8 +135,14 @@ void testVectorSort() {
         int idx=0;
         auto vIn = getVector(W[i]);
 #ifdef MY_TEST
+    #ifdef MY_VECTOR_VERSION
         auto expected = std::vector<float>(vIn);
         std::sort(expected.begin(), expected.end());
+    #else
+        auto expected = new float [W[i]];
+        std::copy(vIn, vIn + W[i], expected);
+        std::sort(expected, expected + W[i]);
+    #endif
 #endif
 
 //        labels[idx] = "Serial\n";
@@ -249,6 +263,12 @@ void testVectorSort() {
 //#endif
 
         /**
+         *      pointers:
+         *      0) N=67108864; p=16 => Tp=3.79642s;
+         *      1) N=1073741824; p=16 => mem=9Gb;
+         *      vector for localrearrangement result Tp=52.0788s;
+         *      poiters everuwhere: Tp=43.8582s;
+         *
          *      vector:
          *      0) N=67108864; p=16 => Tp=7.23539s;
          *       after deleting barier but with double mem usage: Tp=4.17204s;
@@ -256,12 +276,25 @@ void testVectorSort() {
          */
         labels[idx] = "Quick parallel with persistent thread pool:\n";
 #ifdef MY_TEST
+    #ifdef MY_VECTOR_VERSION
         auto vOutQuickPersistentThreadPoolParallel = std::vector<float>(vIn);
+        auto vInBegin = vOutQuickPersistentThreadPoolParallel.begin();
+    #else
+        auto vOutQuickPersistentThreadPoolParallel = new float [W[i]];
+        std::copy(vIn, vIn + W[i], vOutQuickPersistentThreadPoolParallel);
+        auto vInBegin = vOutQuickPersistentThreadPoolParallel;
+    #endif
 #else
+    #ifdef MY_VECTOR_VERSION
         auto vOutQuickPersistentThreadPoolParallel = &vIn;
+        auto vInBegin = vOutQuickPersistentThreadPoolParallel.begin();
+    #else
+        auto vOutQuickPersistentThreadPoolParallel = vIn;
+        auto vInBegin = vOutQuickPersistentThreadPoolParallel;
+    #endif
 #endif
-        measure([&W, &vOutQuickPersistentThreadPoolParallel, i, threadsCount] {
-            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel.begin(), W[i], threadsCount);
+        measure([&W, vInBegin, i, threadsCount] {
+            testQuickSortWithStableThreadPoolParallel(vInBegin, W[i], threadsCount);
         }, results[idx++], 1, "seconds", "to_var");
 #ifdef MY_TEST
         verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);

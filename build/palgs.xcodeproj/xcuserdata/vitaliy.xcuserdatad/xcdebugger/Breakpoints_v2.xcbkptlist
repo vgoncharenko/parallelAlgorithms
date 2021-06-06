@@ -14,8 +14,8 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
             landmarkName = "testQuickSortParallel(vInBegin, n, threadCount)"
             landmarkType = "9">
          </BreakpointContent>
@@ -30,39 +30,39 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "runThread(f, threadId, args)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 9dbad0c629b9f3a3"
+                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 34f7dd028e5a77e7"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), unsigned long, std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)"
+                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), unsigned long, float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)"
                   moduleName = "palgs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "301"
-                  endingLineNumber = "301"
+                  startingLineNumber = "333"
+                  endingLineNumber = "333"
                   offsetFromSymbolStart = "101">
                </Location>
                <Location
-                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 5613439d850e3c64"
+                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - aa1c007f42e8b8a8"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(std::__1::__wrap_iter&lt;float*&gt;, unsigned long long, float, BlockBarrier*), unsigned long, std::__1::__wrap_iter&lt;float*&gt;&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)::&apos;lambda&apos;()::operator()() const"
+                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), unsigned long, float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)::&apos;lambda&apos;()::operator()() const"
                   moduleName = "palgs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "301"
-                  endingLineNumber = "301"
+                  startingLineNumber = "333"
+                  endingLineNumber = "333"
                   offsetFromSymbolStart = "19">
                </Location>
             </Locations>
@@ -78,26 +78,10 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
+            startingLineNumber = "385"
+            endingLineNumber = "385"
             landmarkName = "waitForThreads(barrier, args)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7C6BBECF-C7FD-45B5-88E9-5284C2C4AF78"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Sort/QuickSort.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, bufferBegin)"
-            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
