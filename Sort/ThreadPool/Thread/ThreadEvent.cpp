@@ -59,12 +59,36 @@ struct ThreadEvent{
     std::condition_variable finishEventCondition;
     bool isFinish = false;
     
+#ifdef MY_DEBUG
+    ThreadEvent(const ThreadEvent& obj) {
+            std::printf("eventId# %llu copy costruct\n", id);
+    }
+#else
     ThreadEvent(const ThreadEvent& obj) = delete;
-    ThreadEvent &  operator=(const  ThreadEvent &)  = delete;
+#endif
+#ifdef MY_DEBUG
+    ThreadEvent &operator=(const  ThreadEvent &) {
+            std::printf("eventId# %llu copy assigment\n", id);
+    }
+#else
+    ThreadEvent &operator=(const  ThreadEvent &)  = delete;
+#endif
+#ifdef MY_DEBUG
+    ThreadEvent() {
+            std::printf("Def costruct \n");
+    }
+#else
     ThreadEvent() = default;
-    ~ThreadEvent() = default;
+#endif
+   
+#ifdef MY_DEBUG
+    ~ThreadEvent() {
 
-    //ThreadEvent() = default;
+            std::printf("eventId# %llu destroyed\n", id);
+    }
+#else
+    ~ThreadEvent() = default;
+#endif
 
     explicit ThreadEvent (UUID _id, std::unique_ptr<QuickSortPersistentThreadSample> _threadSample)
     : id(_id), threadSample(std::move(_threadSample)) {}

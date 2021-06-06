@@ -9,7 +9,7 @@
 /* Begin PBXAggregateTarget section */
 		67067069B8444323BB9F73C8 /* ZERO_CHECK */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = CACCF385EDDF4B73B33681BE /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildConfigurationList = 5D7184FB20034F7CB82D4AE0 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
 			buildPhases = (
 				F35D78F0141F941BD93189FE /* Generate CMakeFiles/ZERO_CHECK */,
 			);
@@ -20,13 +20,13 @@
 		};
 		FA022690CE6D4315B000E15E /* ALL_BUILD */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = A6B83961085045308FE0991E /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildConfigurationList = ED6501D094D4466D87E92FB6 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
 			buildPhases = (
 				6D81E135C1067501A301D90E /* Generate CMakeFiles/ALL_BUILD */,
 			);
 			dependencies = (
-				2F4FC272555E419F9F97566B /* PBXTargetDependency */,
-				EC3268E9788A4634B9F002AC /* PBXTargetDependency */,
+				3B22BF6D1EC64CBFBD86B71C /* PBXTargetDependency */,
+				E5C323F0F8D942629A5C1F75 /* PBXTargetDependency */,
 			);
 			name = ALL_BUILD;
 			productName = ALL_BUILD;
@@ -34,58 +34,58 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		6BC4233E185C4AA4A2F7E7B1 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */ = {isa = PBXBuildFile; fileRef = EA0A34ADEADF4D7BA25415F6 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */; };
-		C99074F3F39A478786CDDC52 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */ = {isa = PBXBuildFile; fileRef = 3E0F0EFFA1324415A6511B0E /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */; };
-		FF758C51924B425A85428483 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 6EBDCECBFA40409E8D4AB110 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */; };
+		1E87D85B2F554CBFADA28F4B /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */ = {isa = PBXBuildFile; fileRef = 1D4D1BB36E724AFBB4B27264 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */; };
+		8280DBBDCFC24F87A700F023 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 17B80B5EB16D49248EA96EEF /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */; };
+		FA054D5627F04BAD8A1283BA /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */ = {isa = PBXBuildFile; fileRef = D4E8B72F09BF4D1AA76E3FB4 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildStyle section */
-		6681348491D3405593C159EA /* Release */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-			};
-			name = Release;
-		};
-		B9B3F2232A2B4187AC079144 /* Debug */ = {
+		2DFA0C6C0AE047BE89FBAA93 /* Debug */ = {
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 			};
 			name = Debug;
 		};
-		D071AB68DD2045D09DBAADB4 /* RelWithDebInfo */ = {
+		3C87E1100CFC434592151910 /* Release */ = {
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 			};
-			name = RelWithDebInfo;
+			name = Release;
 		};
-		D2F2A10027354E9189F5D896 /* MinSizeRel */ = {
+		59D0E9341E0C4CF2BA81580E /* MinSizeRel */ = {
 			isa = PBXBuildStyle;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 			};
 			name = MinSizeRel;
 		};
+		C3BC315C617948BC8D18C393 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
 /* End PBXBuildStyle section */
 
 /* Begin PBXContainerItemProxy section */
-		761D0DB148A049F3A65E7792 /* PBXContainerItemProxy */ = {
+		8AA54F1592DF40FE87277827 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7190A499470D457FB2AD8CF5 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 820320AC8A3F4985A251ACE4;
 			remoteInfo = palgs;
 		};
-		9D75E0050A2E40298C6959D2 /* PBXContainerItemProxy */ = {
+		8FB967B7534A413FBBDBE39A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7190A499470D457FB2AD8CF5 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 67067069B8444323BB9F73C8;
 			remoteInfo = ZERO_CHECK;
 		};
-		AEFB21D8E1704F8683D76274 /* PBXContainerItemProxy */ = {
+		DFE6AAFE516B48E4B054A2D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7190A499470D457FB2AD8CF5 /* Project object */;
 			proxyType = 1;
@@ -95,15 +95,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3379F00E74094B5EA19FFD8B /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
-		3E0F0EFFA1324415A6511B0E /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = measure.cpp; path = measure.cpp; sourceTree = SOURCE_ROOT; };
-		6EBDCECBFA40409E8D4AB110 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
-		BFADFA23600A4705AB77CFB2 /* palgs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = palgs; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA0A34ADEADF4D7BA25415F6 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = main.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
+		0B15BCBBF2FB42EB83E9BC9A /* palgs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = palgs; sourceTree = BUILT_PRODUCTS_DIR; };
+		17B80B5EB16D49248EA96EEF /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		1D4D1BB36E724AFBB4B27264 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = measure.cpp; path = measure.cpp; sourceTree = SOURCE_ROOT; };
+		22022266028D4878BC567DBA /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		D4E8B72F09BF4D1AA76E3FB4 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = main.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BFEDCA990A604B68B1152B9D /* Frameworks */ = {
+		B5333997553B40828981DFEE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -113,63 +113,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0F7CC99CDFAA420F82C0B7B3 /* Frameworks */ = {
+		12561FD8C77549068313E9EF /* ALL_BUILD */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		39CD2C8BAFC44B90B128A870 = {
-			isa = PBXGroup;
-			children = (
-				6A1993F97A9044289380B658 /* palgs */,
-				A6ECEE12228643AEB2CDF0E3 /* ALL_BUILD */,
-				9B9BDF20AADD42E996618CBE /* Products */,
-				0F7CC99CDFAA420F82C0B7B3 /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		6A1993F97A9044289380B658 /* palgs */ = {
-			isa = PBXGroup;
-			children = (
-				E9A336A9FAAC47F4BF19C5D1 /* Source Files */,
-				6EBDCECBFA40409E8D4AB110 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */,
-			);
-			name = palgs;
-			sourceTree = "<group>";
-		};
-		9B9BDF20AADD42E996618CBE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BFADFA23600A4705AB77CFB2 /* palgs */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A6ECEE12228643AEB2CDF0E3 /* ALL_BUILD */ = {
-			isa = PBXGroup;
-			children = (
-				D5FC82CE5E44417E9BD06F48 /* CMake Rules */,
-				3379F00E74094B5EA19FFD8B /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */,
+				C48A850FC0014E09B5B3EBE2 /* CMake Rules */,
+				22022266028D4878BC567DBA /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */,
 			);
 			name = ALL_BUILD;
 			sourceTree = "<group>";
 		};
-		D5FC82CE5E44417E9BD06F48 /* CMake Rules */ = {
+		21ED47ECB5DA41D090C6D8B5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0B15BCBBF2FB42EB83E9BC9A /* palgs */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4228D9526EA94A008DEF5E17 = {
+			isa = PBXGroup;
+			children = (
+				C10935CFF09A4E1580986185 /* palgs */,
+				12561FD8C77549068313E9EF /* ALL_BUILD */,
+				21ED47ECB5DA41D090C6D8B5 /* Products */,
+				FC7A8A0D0BDE4860A3CC85C0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		76DBE9A6F4A84C5DB1FA5D74 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				D4E8B72F09BF4D1AA76E3FB4 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */,
+				1D4D1BB36E724AFBB4B27264 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		C10935CFF09A4E1580986185 /* palgs */ = {
+			isa = PBXGroup;
+			children = (
+				76DBE9A6F4A84C5DB1FA5D74 /* Source Files */,
+				17B80B5EB16D49248EA96EEF /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/CMakeLists.txt */,
+			);
+			name = palgs;
+			sourceTree = "<group>";
+		};
+		C48A850FC0014E09B5B3EBE2 /* CMake Rules */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "CMake Rules";
 			sourceTree = "<group>";
 		};
-		E9A336A9FAAC47F4BF19C5D1 /* Source Files */ = {
+		FC7A8A0D0BDE4860A3CC85C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EA0A34ADEADF4D7BA25415F6 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */,
-				3E0F0EFFA1324415A6511B0E /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */,
 			);
-			name = "Source Files";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,19 +177,19 @@
 /* Begin PBXNativeTarget section */
 		820320AC8A3F4985A251ACE4 /* palgs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0A70731A5B0F4268BF713B61 /* Build configuration list for PBXNativeTarget "palgs" */;
+			buildConfigurationList = DDE2891FDFE74B7991CECFF3 /* Build configuration list for PBXNativeTarget "palgs" */;
 			buildPhases = (
-				62695565F10041F8B379DFC1 /* Sources */,
-				BFEDCA990A604B68B1152B9D /* Frameworks */,
+				560C4236F4344F659E86F3F2 /* Sources */,
+				B5333997553B40828981DFEE /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5B30331ECFBD4F788584F334 /* PBXTargetDependency */,
+				0D55DB39D18B4286B0611B6E /* PBXTargetDependency */,
 			);
 			name = palgs;
 			productName = palgs;
-			productReference = BFADFA23600A4705AB77CFB2 /* palgs */;
+			productReference = 0B15BCBBF2FB42EB83E9BC9A /* palgs */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -201,18 +201,18 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1250;
 			};
-			buildConfigurationList = 0A41E2C4EDFF470C9430E77A /* Build configuration list for PBXProject "palgs" */;
+			buildConfigurationList = F2AEBD90B9414C9A8DA37F74 /* Build configuration list for PBXProject "palgs" */;
 			buildSettings = {
 			};
 			buildStyles = (
-				B9B3F2232A2B4187AC079144 /* Debug */,
-				6681348491D3405593C159EA /* Release */,
-				D2F2A10027354E9189F5D896 /* MinSizeRel */,
-				D071AB68DD2045D09DBAADB4 /* RelWithDebInfo */,
+				2DFA0C6C0AE047BE89FBAA93 /* Debug */,
+				3C87E1100CFC434592151910 /* Release */,
+				59D0E9341E0C4CF2BA81580E /* MinSizeRel */,
+				C3BC315C617948BC8D18C393 /* RelWithDebInfo */,
 			);
 			compatibilityVersion = "Xcode 3.2";
 			hasScannedForEncodings = 0;
-			mainGroup = 39CD2C8BAFC44B90B128A870;
+			mainGroup = 4228D9526EA94A008DEF5E17;
 			projectDirPath = ../;
 			projectRoot = "";
 			targets = (
@@ -323,97 +323,47 @@ fi
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		62695565F10041F8B379DFC1 /* Sources */ = {
+		560C4236F4344F659E86F3F2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BC4233E185C4AA4A2F7E7B1 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */,
-				C99074F3F39A478786CDDC52 /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */,
+				FA054D5627F04BAD8A1283BA /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/main.cpp */,
+				1E87D85B2F554CBFADA28F4B /* /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/measure.cpp */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2F4FC272555E419F9F97566B /* PBXTargetDependency */ = {
+		0D55DB39D18B4286B0611B6E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 67067069B8444323BB9F73C8 /* ZERO_CHECK */;
+			targetProxy = 8FB967B7534A413FBBDBE39A /* PBXContainerItemProxy */;
+		};
+		3B22BF6D1EC64CBFBD86B71C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 67067069B8444323BB9F73C8 /* ZERO_CHECK */;
+			targetProxy = DFE6AAFE516B48E4B054A2D8 /* PBXContainerItemProxy */;
+		};
+		E5C323F0F8D942629A5C1F75 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 820320AC8A3F4985A251ACE4 /* palgs */;
-			targetProxy = 761D0DB148A049F3A65E7792 /* PBXContainerItemProxy */;
-		};
-		5B30331ECFBD4F788584F334 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 67067069B8444323BB9F73C8 /* ZERO_CHECK */;
-			targetProxy = 9D75E0050A2E40298C6959D2 /* PBXContainerItemProxy */;
-		};
-		EC3268E9788A4634B9F002AC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 67067069B8444323BB9F73C8 /* ZERO_CHECK */;
-			targetProxy = AEFB21D8E1704F8683D76274 /* PBXContainerItemProxy */;
+			targetProxy = 8AA54F1592DF40FE87277827 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		03DF01814253458D92CF6130 /* Debug */ = {
+		342614FC819D4D8A95E17F49 /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = ("");
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("$(inherited)");
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk;
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/build;
 			};
-			name = Debug;
+			name = RelWithDebInfo;
 		};
-		08D68E15525645B099786F1F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = ("");
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
-				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("$(inherited)");
-			};
-			name = Release;
-		};
-		158C871793764E5E8E3F9332 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = ("");
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("$(inherited)");
-			};
-			name = Release;
-		};
-		3029D1E0479D48CB954F795A /* Debug */ = {
+		3DFEBDEC745044308A81BDBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -423,80 +373,7 @@ fi
 			};
 			name = Debug;
 		};
-		3367F28A09024C7B8B16CA95 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk;
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/build;
-			};
-			name = Release;
-		};
-		430F298E0B484AC5A0DFB1E9 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = ("");
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ZERO_CHECK;
-				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("$(inherited)");
-			};
-			name = RelWithDebInfo;
-		};
-		7AF96AAD3DFF43F7BAAE5C0D /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++2a' ";
-				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names");
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = palgs;
-				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("$(inherited)");
-			};
-			name = MinSizeRel;
-		};
-		7C482B39E7074B149BD41294 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INSTALL_PATH = "";
-				OTHER_LDFLAGS = ("");
-				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
-				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = ("$(inherited)");
-			};
-			name = RelWithDebInfo;
-		};
-		9C3345D69E5241BFB5C51A30 /* Debug */ = {
+		460F6CCEC20643259E8A9222 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -505,7 +382,7 @@ fi
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",MY_TEST);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INSTALL_PATH = "";
 				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++2a' ";
@@ -519,7 +396,7 @@ fi
 			};
 			name = Debug;
 		};
-		ABB3373D07DA49E489C5975B /* MinSizeRel */ = {
+		55D7D4F4A6214B3EA34CD4D8 /* MinSizeRel */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -539,7 +416,107 @@ fi
 			};
 			name = MinSizeRel;
 		};
-		C4AF99D031C242CE8186B78F /* Debug */ = {
+		708F327225354EB689A88BF6 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk;
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/build;
+			};
+			name = MinSizeRel;
+		};
+		72A0493F3F4F45FC8C28FC86 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		7A86C228D8A64FCC96D8D40E /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		9DD55741DAE5455DB9F31CFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk;
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/build;
+			};
+			name = Release;
+		};
+		AC01D2EE75E0477A8A3C8244 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		AE4841A3FF4249AE908E5EBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		CCF4F90B5845423BB43C88D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -559,7 +536,7 @@ fi
 			};
 			name = Debug;
 		};
-		D4C50F60696A4844AAE14DA2 /* RelWithDebInfo */ = {
+		D87C4E48CEB14E31AD383856 /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -568,7 +545,7 @@ fi
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",MY_TEST);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INSTALL_PATH = "";
 				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++2a' ";
@@ -582,7 +559,7 @@ fi
 			};
 			name = RelWithDebInfo;
 		};
-		DB60082DAFF24FCBA335AD2A /* Release */ = {
+		DB9ED60ED61D483DA1A9F66A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -591,7 +568,7 @@ fi
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",MY_TEST);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INSTALL_PATH = "";
 				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++2a' ";
@@ -605,27 +582,7 @@ fi
 			};
 			name = Release;
 		};
-		ECC62AD0EEFA4643A379E925 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk;
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/build;
-			};
-			name = MinSizeRel;
-		};
-		F51E32310DAC4D65A0C233D8 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk;
-				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build/build;
-			};
-			name = RelWithDebInfo;
-		};
-		F69D36217982474E999C2DFC /* MinSizeRel */ = {
+		E60039EC40C940A09AFD3E5A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -637,7 +594,30 @@ fi
 				INSTALL_PATH = "";
 				OTHER_LDFLAGS = ("");
 				OTHER_REZFLAGS = "";
-				PRODUCT_NAME = ALL_BUILD;
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		F0D94C8FCA9F4A7CB8916C78 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",MY_TEST);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++2a' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = palgs;
 				SECTORDER_FLAGS = "";
 				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
 				USE_HEADERMAP = NO;
@@ -645,49 +625,69 @@ fi
 			};
 			name = MinSizeRel;
 		};
+		F4B2D89DEFBC4600AFE1A829 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/build;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0A41E2C4EDFF470C9430E77A /* Build configuration list for PBXProject "palgs" */ = {
+		5D7184FB20034F7CB82D4AE0 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3029D1E0479D48CB954F795A /* Debug */,
-				3367F28A09024C7B8B16CA95 /* Release */,
-				ECC62AD0EEFA4643A379E925 /* MinSizeRel */,
-				F51E32310DAC4D65A0C233D8 /* RelWithDebInfo */,
+				E60039EC40C940A09AFD3E5A /* Debug */,
+				AE4841A3FF4249AE908E5EBF /* Release */,
+				55D7D4F4A6214B3EA34CD4D8 /* MinSizeRel */,
+				F4B2D89DEFBC4600AFE1A829 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		0A70731A5B0F4268BF713B61 /* Build configuration list for PBXNativeTarget "palgs" */ = {
+		DDE2891FDFE74B7991CECFF3 /* Build configuration list for PBXNativeTarget "palgs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9C3345D69E5241BFB5C51A30 /* Debug */,
-				DB60082DAFF24FCBA335AD2A /* Release */,
-				7AF96AAD3DFF43F7BAAE5C0D /* MinSizeRel */,
-				D4C50F60696A4844AAE14DA2 /* RelWithDebInfo */,
+				460F6CCEC20643259E8A9222 /* Debug */,
+				DB9ED60ED61D483DA1A9F66A /* Release */,
+				F0D94C8FCA9F4A7CB8916C78 /* MinSizeRel */,
+				D87C4E48CEB14E31AD383856 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		A6B83961085045308FE0991E /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+		ED6501D094D4466D87E92FB6 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C4AF99D031C242CE8186B78F /* Debug */,
-				08D68E15525645B099786F1F /* Release */,
-				F69D36217982474E999C2DFC /* MinSizeRel */,
-				7C482B39E7074B149BD41294 /* RelWithDebInfo */,
+				CCF4F90B5845423BB43C88D4 /* Debug */,
+				AC01D2EE75E0477A8A3C8244 /* Release */,
+				72A0493F3F4F45FC8C28FC86 /* MinSizeRel */,
+				7A86C228D8A64FCC96D8D40E /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		CACCF385EDDF4B73B33681BE /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+		F2AEBD90B9414C9A8DA37F74 /* Build configuration list for PBXProject "palgs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				03DF01814253458D92CF6130 /* Debug */,
-				158C871793764E5E8E3F9332 /* Release */,
-				ABB3373D07DA49E489C5975B /* MinSizeRel */,
-				430F298E0B484AC5A0DFB1E9 /* RelWithDebInfo */,
+				3DFEBDEC745044308A81BDBA /* Debug */,
+				9DD55741DAE5455DB9F31CFE /* Release */,
+				708F327225354EB689A88BF6 /* MinSizeRel */,
+				342614FC819D4D8A95E17F49 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

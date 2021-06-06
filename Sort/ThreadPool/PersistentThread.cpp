@@ -36,10 +36,8 @@ public:
             if (nullptr == event) return;
             this->inProgress = true;
 #ifdef MY_DEBUG
-            if (event->threadSample != nullptr)
-                std::printf("Process sample for thread# %d\n", int(event->threadSample->id));
+            std::printf("Process sample for eventId# %d\n", int(event->id));
 #endif
-            //event->threadSample->f.get();
             PersistentThreadPoolFuture fut = std::async(std::launch::deferred,
                                                         event->threadSample->func,
                                                         std::ref(event->threadSample->begin),
@@ -51,7 +49,13 @@ public:
             fut.wait();
             this->resetThread();
             this->inProgress = false;
-            event->isFinish = true;
+            {
+                std::lock_guard<std::mutex> lk(event->m);
+                event->isFinish = true;
+            }
+#ifdef MY_DEBUG
+            std::printf("Process sample for eventId# %d finished\n", int(event->id));
+#endif
             event->finishEventCondition.notify_one();
         }
     }

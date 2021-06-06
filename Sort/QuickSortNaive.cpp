@@ -135,7 +135,7 @@ typedef void ThreadPoolCallbackFunction(LocalRearrangementResult &localResult,
 typedef std::future<void> ThreadPoolCallbackFuture;
 typedef std::future<void> PersistentThreadPoolFuture;
 typedef uint64_t UUID;
-typedef int ThreadId;
+typedef size_t ThreadId;
 typedef LocalRearrangementFuture ThreadPoolFuture;
 
 class Timeout: public std::exception
@@ -295,7 +295,7 @@ public:
     };
 
     template<class F, class... Args>
-    void runThread(F&& f, int8_t threadId, Args&&... args) {
+    void runThread(F&& f, size_t threadId, Args&&... args) {
         std::unique_lock<std::mutex> blockM1Lock(m);
         std::chrono::milliseconds span (2);
         if (isAvailable.wait_for(blockM1Lock, span, [this] { return this->maxSize > this->count; })) {
@@ -305,7 +305,7 @@ public:
         }
         blockM1Lock.unlock();
 #ifdef MY_DEBUG
-        std::printf("Start threadId %d\n", threadId);
+        std::printf("Start threadId %zu\n", threadId);
 #endif
         ThreadPoolFuture fut = std::async(std::launch::async, std::forward<F&&>(f), std::forward<Args&&>(args)...);
         queue.emplace(ThreadSample{threadId, std::move(fut)});
@@ -323,7 +323,7 @@ public:
                 queue.emplace(std::move(t));
             } else if (res == std::future_status::ready) {
 #ifdef MY_DEBUG
-                std::printf("Finish threadId %d\n", t.id);
+                std::printf("Finish threadId %zu\n", t.id);
 #endif
                 // wait for all threads to finish 1 stage
                 std::unique_lock<std::mutex> blockM1Lock(barrier->m);
@@ -336,7 +336,7 @@ public:
                                                           std::forward<callbackArgs&&>(args)...);
                 callbackQueue.emplace(ThreadCallbackSample{t.id, std::move(fut)});
 #ifdef MY_DEBUG
-                std::printf("Start callback threadId %d\n", t.id);
+                std::printf("Start callback threadId %zu\n", t.id);
 #endif
             }
         }
@@ -353,7 +353,7 @@ public:
                 t.f.get();
                 //resultSet.erase(resultSet.begin() + t.id);
 #ifdef MY_DEBUG
-                std::printf("Finish callback threadId %d\n", t.id);
+                std::printf("Finish callback threadId %zu\n", t.id);
 #endif
             }
         }
@@ -380,7 +380,7 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
     auto threadPool = std::make_unique<ThreadPool>(maxThreadCount, quickSortParallelGlobalRearrangement);
     auto barrier = new BlockBarrier(maxThreadCount);
     
-    int8_t i = 0;
+    size_t i = 0;
     auto end = vInBegin + n;
     auto cursor = vInBegin;
     while (cursor < end) {

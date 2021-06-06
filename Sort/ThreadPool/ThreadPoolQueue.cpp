@@ -21,6 +21,10 @@ private:
     std::mutex mBack;
     std::queue<std::shared_ptr<ThreadEvent>> eventQueue{};
     std::condition_variable eventInQueue;
+    
+    bool empty() {
+        return eventQueue.empty();
+    }
 public:
 
     std::shared_ptr<ThreadEvent> pullEvent() {
@@ -32,8 +36,7 @@ public:
         }
         event = eventQueue.front();
 #ifdef MY_DEBUG
-        if (event->threadSample != nullptr)
-            std::printf("Pull event from the queue thread# %d\n", event->threadSample->id);
+        std::printf("Pull event from the queue eventId %llu\n", event->id);
 #endif
         eventQueue.pop();
         waitLock.unlock();
@@ -43,20 +46,17 @@ public:
 
     void pushEvent(std::shared_ptr<ThreadEvent> event) {
 #ifdef MY_DEBUG
-        if (event->threadSample != nullptr)
-            std::printf("Push event to the queue thread# %d\n", event->threadSample->id);
+        std::printf("Push event to the queue eventId %llu\n", event->id);
 #endif
-        std::lock_guard<std::mutex> backLock(mBack);
+        std::lock_guard<std::mutex> backLock(mFront);
         eventQueue.push(event);
         eventInQueue.notify_one();
     }
 
-    bool empty() {
-        return eventQueue.empty();
-    }
-
     void terminate() {
+        std::unique_lock<std::mutex> lk(mFront);
         stopQueue = true;
+        lk.unlock();
         eventInQueue.notify_all();
     }
 };

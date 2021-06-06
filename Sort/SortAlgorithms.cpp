@@ -93,20 +93,21 @@ void sanityCheck()
     std::vector<float> expected(input.size());
     std::copy(input.begin(), input.end(), expected.begin());
     std::sort(expected.begin(), expected.end());
-    testQuickSortParallel(input.begin(), input.size(), 5);
+    testQuickSortWithStableThreadPoolParallel(input.begin(), input.size(), 5);
     verifyVectors(expected, input, input.size());
 }
 
 void testVectorSort() {
-//    sanityCheck();return;
+    //sanityCheck();return;
     uint8_t iterations = 1;
     uint8_t threadsCount = 16;
     auto W = new uint64_t[iterations];
-//    W[0] = 1024;
+    //W[0] = 1024;
     //W[0] = 8589934592;
 //    W[0] = 2147483648;
-    W[0] = 1073741824;
-//    W[0] = 67108864;
+//    W[0] = 1073741824;
+    W[0] = 67108864;
+//    W[0] = 67108
 //    Fastest sequential
 //    6.10807,
 //    Quick parallel with more threads because of ceil:
@@ -260,7 +261,7 @@ void testVectorSort() {
         auto vOutQuickPersistentThreadPoolParallel = &vIn;
 #endif
         measure([&W, &vOutQuickPersistentThreadPoolParallel, i, threadsCount] {
-            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel->begin(), W[i], threadsCount);
+            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel.begin(), W[i], threadsCount);
         }, results[idx++], 1, "seconds", "to_var");
 #ifdef MY_TEST
         verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);
