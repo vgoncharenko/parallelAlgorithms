@@ -13,6 +13,14 @@
 #include <unordered_map>
 #include <mutex>
 
+typedef void quickSortParallelLocalRearrangementWithStoreInGlobalFunc(I begin,
+                                                                  const uint64_t size,
+                                                                  ScalarType pivot,
+                                                                  std::shared_ptr<GlobalRearrangementResult> globalResult,
+                                                                  LocalRearrangementResult& localBuffer);
+
+//typedef void quickSortParallelLocalRearrangementWithStoreInGlobalFunc(I begin);
+
 struct PersistentThreadSample {
     ThreadId id;
     PersistentThreadPoolFuture f;
@@ -21,9 +29,32 @@ struct PersistentThreadSample {
     : id(_id), f(std::move(_f)) {}
 };
 
+struct QuickSortPersistentThreadSample {
+    ThreadId id;
+    quickSortParallelLocalRearrangementWithStoreInGlobalFunc* func;
+    I begin;
+    const uint64_t size;
+    ScalarType pivot;
+    std::shared_ptr<GlobalRearrangementResult> globalResult;
+    
+    explicit QuickSortPersistentThreadSample (ThreadId _id,
+                                              quickSortParallelLocalRearrangementWithStoreInGlobalFunc* _func,
+                                              I _begin,
+                                              const uint64_t _size,
+                                              ScalarType _pivot,
+                                              std::shared_ptr<GlobalRearrangementResult> _globalResult)
+    : id(_id),
+    func(_func),
+    begin(_begin),
+    size(_size),
+    pivot(_pivot),
+    globalResult(_globalResult)
+    {}
+};
+
 struct ThreadEvent{
     UUID id;
-    std::unique_ptr<PersistentThreadSample> threadSample;
+    std::unique_ptr<QuickSortPersistentThreadSample> threadSample;
     std::mutex m;
     std::condition_variable finishEventCondition;
     bool isFinish = false;
@@ -35,7 +66,7 @@ struct ThreadEvent{
 
     //ThreadEvent() = default;
 
-    explicit ThreadEvent (UUID _id, std::unique_ptr<PersistentThreadSample> _threadSample)
+    explicit ThreadEvent (UUID _id, std::unique_ptr<QuickSortPersistentThreadSample> _threadSample)
     : id(_id), threadSample(std::move(_threadSample)) {}
 
 };

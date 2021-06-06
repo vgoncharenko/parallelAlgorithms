@@ -11,43 +11,45 @@
 #include "BlockBarrier.cpp"
 #include "ThreadPool/PersistentThreadPool.cpp"
 
-template<typename T>
+const float MAX_ASSIGNET_WORK_ON_THREAD = 1.25;
+const float BATCH_SIZE = 67108864;
+const float LOCAL_SORT_MAX_BATCH_SIZE = 8388608;
+
 void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
                                                           const uint64_t size,
-                                                          T pivot,
+                                                          ScalarType pivot,
                                                           std::shared_ptr<GlobalRearrangementResult> globalResult,
-                                                          BlockBarrier* barrier){
+                                                          LocalRearrangementResult &localResult
+){
 #ifdef MY_DEBUG
     std::printf("quickSortParallelLocalRearrangementWithStoreInGlobal size:%llu; pivot=%f\n", size, pivot);
 #endif
-    LocalRearrangementResult local = quickSortParallelLocalRearrangement(begin, size, pivot, barrier);
-    std::unique_lock<std::mutex> blockM1Lock(barrier->m);
-    barrier->condition.wait(blockM1Lock, [&barrier] { return barrier->syncAllowed; });
-    quickSortParallelGlobalRearrangement(local, globalResult);
+    quickSortParallelLocalRearrangement(begin, size, pivot, localResult, globalResult);
+    quickSortParallelGlobalRearrangement(localResult, globalResult);
 }
 
 
 
 void quickSortWithStableThreadPoolParallel(I vInBegin,
                                            const uint64_t n,
-                                           const int8_t threadCount,
-                                           std::shared_ptr<PersistentThreadPool> threadPool){
+                                           std::shared_ptr<PersistentThreadPool> threadPool,
+                                           I bufferBegin){
 #ifdef MY_DEBUG
     std::printf("Start testQuickSortParallel N:%llu; threadCount:%d\n", n, threadCount);
 #endif
-    if (threadCount <= 1) {
-        std::sort(vInBegin, vInBegin + n);
+    if (n <= LOCAL_SORT_MAX_BATCH_SIZE) {
+        auto begin = vInBegin;
+        std::sort(begin, begin + n);
         return;
     }
     auto pivot = getPivot(vInBegin, n);
-    uint64_t batchSize = n/threadCount;
+    //uint64_t batchSize = n/threadCount;
     //auto buffer = new ScalarType[n];
-    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(vInBegin, n);
+    auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(bufferBegin, n);
 //    globalRearrangeResult->sBegin = vInBegin;
 //    globalRearrangeResult->sTail = vInBegin;
     //globalRearrangeResult->lBegin = buffer + n;
 //    globalRearrangeResult->lTail = vInBegin + n;
-    auto barier = new BlockBarrier(threadCount);
     std::vector<UUID> eventSet;
 
     int8_t i = 0;
@@ -55,26 +57,26 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
     auto cursor = vInBegin;
     while (cursor < end) {
         UUID eventId = threadPool->generateEventId();
-        int curBatchSize = (2*batchSize < (end - cursor)) ? batchSize : (end - cursor);
-        threadPool->runThread(quickSortParallelLocalRearrangementWithStoreInGlobal<ScalarType>, i, eventId, cursor, curBatchSize, pivot, globalRearrangeResult, barier);
+        int curBatchSize = (MAX_ASSIGNET_WORK_ON_THREAD*BATCH_SIZE < (end - cursor)) ? BATCH_SIZE : (end - cursor);
+        threadPool->runThread(quickSortParallelLocalRearrangementWithStoreInGlobal, i, eventId, cursor, curBatchSize, pivot, globalRearrangeResult);
         eventSet.push_back(eventId);
         if (cursor + curBatchSize == end) break;
         ++i;
-        cursor += batchSize;
+        cursor += BATCH_SIZE;
     }
-    barier->infLimit = i+1;
     threadPool->waitForEvents(eventSet);
 
     size_t sSize = globalRearrangeResult->sTail - globalRearrangeResult->sBegin;
-    int8_t sThreadCount = round(threadCount * (float(sSize) / n));
-    std::thread t{quickSortWithStableThreadPoolParallel, globalRearrangeResult->sBegin, sSize, sThreadCount, threadPool};
-    quickSortWithStableThreadPoolParallel(globalRearrangeResult->lTail, n - sSize, threadCount - sThreadCount, threadPool);
+
+    std::thread t{quickSortWithStableThreadPoolParallel, globalRearrangeResult->sBegin, sSize, threadPool, vInBegin};
+    quickSortWithStableThreadPoolParallel(globalRearrangeResult->lTail, n - sSize, threadPool, vInBegin + sSize);
     t.join();
 #ifdef MY_NOT_MOVABLE
     std::copy(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
 #else
 //    vInBegin = globalRearrangeResult->sBegin;
-//    std::move(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
+    // TODO: a lot double copies on each recursion back and forth. Better to return the last actual as a ref o result set.
+    std::copy(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
 #endif
 #ifdef MY_DEBUG
     std::printf("End testQuickSortParallel N:%llu; threadCount:%d\n", n, threadCount);
@@ -84,8 +86,12 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
 void testQuickSortWithStableThreadPoolParallel(I vInBegin,
                                                const uint64_t n,
                                                const int8_t threadCount) {
-    auto threadPool = std::make_shared<PersistentThreadPool>(threadCount);
-    quickSortWithStableThreadPoolParallel(vInBegin, n, threadCount, threadPool);
+    auto globalBuffer = std::vector<ScalarType>(n);
+    uint8_t tCount = threadCount > n/BATCH_SIZE ? n/BATCH_SIZE : threadCount;
+    auto threadPool = std::make_shared<PersistentThreadPool>(
+                                                             tCount,
+                                                             LOCAL_SORT_MAX_BATCH_SIZE);
+    quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer.begin());
 }
 
 

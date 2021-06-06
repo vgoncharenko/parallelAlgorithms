@@ -14,8 +14,8 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
+            startingLineNumber = "405"
+            endingLineNumber = "405"
             landmarkName = "testQuickSortParallel(vInBegin, n, threadCount)"
             landmarkType = "9">
          </BreakpointContent>
@@ -30,13 +30,13 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
             landmarkName = "runThread(f, threadId, args)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - cdb3a158496941a7"
+                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - cdb3a15849697e91"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -46,12 +46,12 @@
                   urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "247"
-                  endingLineNumber = "247"
+                  startingLineNumber = "301"
+                  endingLineNumber = "301"
                   offsetFromSymbolStart = "94">
                </Location>
                <Location
-                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 2bb0b7a619b5e02"
+                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 2bb0b7a619b6134"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -61,8 +61,8 @@
                   urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "247"
-                  endingLineNumber = "247"
+                  startingLineNumber = "301"
+                  endingLineNumber = "301"
                   offsetFromSymbolStart = "19">
                </Location>
             </Locations>
@@ -78,8 +78,8 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
             landmarkName = "waitForThreads(barrier, args)"
             landmarkType = "7">
          </BreakpointContent>

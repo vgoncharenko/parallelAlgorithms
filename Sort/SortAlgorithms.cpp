@@ -195,16 +195,16 @@ void testVectorSort() {
 
 /**
  * Very memory efficient:
- *      1) N=1073741824 => mem=4.5Gb and Ts=180.757s
+ *      1) N=1073741824 => mem=4.5Gb and Ts=100.321s
  */
 //        labels[idx] = "Fastest sequential \n";
 //#ifdef MY_TEST
 //        auto vOutFastestSerial = std::vector<float>(vIn);
 //#else
-//        auto vOutFastestSerial = vIn;
+//        auto vOutFastestSerial = &vIn;
 //#endif
 //        measure([&W, &vOutFastestSerial, i] {
-//            std::sort(vOutFastestSerial.begin(), vOutFastestSerial.begin()+W[i]);
+//            std::sort(vOutFastestSerial->begin(), vOutFastestSerial->end());
 //        }, results[idx++], 1, "seconds", "to_var");
 //#ifdef MY_TEST
 //        verifyVectors(expected, vOutFastestSerial, W[i]);
@@ -227,7 +227,6 @@ void testVectorSort() {
 //#endif
 
 /**
- * Very memory unefficient:
  *      pointers:
  *      0) N=67108864; p=16 => Tp=6.15065s;
  *      1) N=1073741824; p=16 => mem=43Gb; swap=30Gb; and Tp=180.757s;
@@ -251,16 +250,17 @@ void testVectorSort() {
         /**
          *      vector:
          *      0) N=67108864; p=16 => Tp=7.23539s;
-         *      1) N=1073741824; p=16 => mem=8Gb; Tp=165.769s;
+         *       after deleting barier but with double mem usage: Tp=4.17204s;
+         *      1) N=1073741824; p=16 => mem=8.5Gb; Tp=61.1319s;
          */
         labels[idx] = "Quick parallel with persistent thread pool:\n";
 #ifdef MY_TEST
         auto vOutQuickPersistentThreadPoolParallel = std::vector<float>(vIn);
 #else
-        auto vOutQuickPersistentThreadPoolParallel = vIn;
+        auto vOutQuickPersistentThreadPoolParallel = &vIn;
 #endif
         measure([&W, &vOutQuickPersistentThreadPoolParallel, i, threadsCount] {
-            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel.begin(), W[i], threadsCount);
+            testQuickSortWithStableThreadPoolParallel(vOutQuickPersistentThreadPoolParallel->begin(), W[i], threadsCount);
         }, results[idx++], 1, "seconds", "to_var");
 #ifdef MY_TEST
         verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);

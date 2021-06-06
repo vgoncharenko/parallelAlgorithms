@@ -104,6 +104,10 @@ struct LocalRearrangementResult
 //        delete[] S;
 //        delete[] L;
 //    }
+    void flushData() {
+        s_count = 0;
+        l_count = 0;
+    }
 };
 
 struct GlobalRearrangementResult
@@ -126,7 +130,7 @@ public:
 
 typedef std::future<LocalRearrangementResult> LocalRearrangementFuture;
 
-typedef void ThreadPoolCallbackFunction(LocalRearrangementResult localResult,
+typedef void ThreadPoolCallbackFunction(LocalRearrangementResult &localResult,
                                         std::shared_ptr<GlobalRearrangementResult> globalResult);
 typedef std::future<void> ThreadPoolCallbackFuture;
 typedef std::future<void> PersistentThreadPoolFuture;
@@ -151,8 +155,12 @@ class NotCopyable: public std::exception
 } notCopyableException;
 
 template<typename T>
-LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint64_t size, T pivot, BlockBarrier *barrier){
+LocalRearrangementResult quickSortParallelLocalRearrangement(I begin,
+                                                             const uint64_t size,
+                                                             T pivot,
+                                                             BlockBarrier *barrier){
     auto result = LocalRearrangementResult(size);
+    
     auto S = result.S.begin();
     auto L = result.L.begin();
     
@@ -173,10 +181,6 @@ LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint
     
     result.s_count = curS - S;
     result.l_count = curL - L;
-
-//    auto result = LocalRearrangementResult{std::move(Vs), static_cast<size_t>(curS - S), std::move(Vl), static_cast<size_t>(curL - L)};
-//    delete [] S;
-//    delete [] L;
     
     // sync with other threads, then perform stage 2
     // add one pass to barrier
@@ -186,7 +190,7 @@ LocalRearrangementResult quickSortParallelLocalRearrangement(I begin, const uint
     return result;
 }
 
-void quickSortParallelGlobalRearrangement(LocalRearrangementResult localResult,
+void quickSortParallelGlobalRearrangement(LocalRearrangementResult &localResult,
                                           std::shared_ptr<GlobalRearrangementResult> globalResult){
     if (localResult.s_count > 0) {
         std::unique_lock<std::mutex> sLock(globalResult->sMutex);
@@ -196,7 +200,7 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult localResult,
 #ifdef MY_NOT_MOVABLE
         std::copy(localResult.S, localResult.S + localResult.s_count, localBegin);
 #else
-        std::move(localResult.S.begin(), localResult.S.begin() + localResult.s_count, localBegin);
+        std::copy(localResult.S.begin(), localResult.S.begin() + localResult.s_count, localBegin);
 #endif
     }
 
@@ -208,9 +212,59 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult localResult,
 #ifdef MY_NOT_MOVABLE
         std::copy(localResult.L, localResult.L + localResult.l_count, localBegin);
 #else
-        std::move(localResult.L.begin(), localResult.L.begin() + localResult.l_count, localBegin);
+        std::copy(localResult.L.begin(), localResult.L.begin() + localResult.l_count, localBegin);
 #endif
     }
+}
+
+void quickSortParallelLocalRearrangement(I begin,
+                                         const uint64_t size,
+                                         ScalarType pivot,
+                                         LocalRearrangementResult& result,
+                                         std::shared_ptr<GlobalRearrangementResult> globalResult){
+    auto S = result.S.begin();
+    auto L = result.L.begin();
+    bool intermediateFlushPossible = false;
+    auto resultBufferSize = result.S.size();
+    if (size > resultBufferSize) {
+        intermediateFlushPossible = true;
+    }
+    uint64_t sCount = 0, lCount = 0;
+    uint64_t i = 0;
+    
+    I start = begin;
+    I end = start + size;
+    auto curS = S;
+    auto curL = L;
+    while (i < size) {
+        if (intermediateFlushPossible) {
+            if (sCount == resultBufferSize || lCount == resultBufferSize) {
+                result.s_count = sCount;
+                result.l_count = lCount;
+                quickSortParallelGlobalRearrangement(result, globalResult);
+                result.flushData();
+                curS = S;
+                curL = L;
+                sCount = 0;
+                lCount = 0;
+            }
+        }
+        auto value = *start;
+        if (value <= pivot) {
+            *curS = value;
+            ++curS;
+            ++sCount;
+        } else {
+            *curL = value;
+            ++curL;
+            ++lCount;
+        }
+        ++start;
+        ++i;
+    }
+    
+    result.s_count = sCount;
+    result.l_count = lCount;
 }
 
 struct ThreadSample {
@@ -278,7 +332,7 @@ public:
                 this->count.fetch_sub(1, std::memory_order_acq_rel);
                 ThreadPoolCallbackFuture fut = std::async(std::launch::async,
                                                           callbackFunction,
-                                                          std::forward<LocalRearrangementResult>(resultSet[t.id]),
+                                                          std::ref(resultSet[t.id]),
                                                           std::forward<callbackArgs&&>(args)...);
                 callbackQueue.emplace(ThreadCallbackSample{t.id, std::move(fut)});
 #ifdef MY_DEBUG
@@ -331,7 +385,13 @@ void testQuickSortParallel(I vInBegin, const uint64_t n, const int8_t threadCoun
     auto cursor = vInBegin;
     while (cursor < end) {
         int curBatchSize = (2*batchSize < (end - cursor)) ? batchSize : (end - cursor);
-        threadPool->runThread(quickSortParallelLocalRearrangement<ScalarType>, i, cursor, curBatchSize, pivot, barrier);
+        threadPool->runThread(quickSortParallelLocalRearrangement<ScalarType>,
+                              i,
+                              cursor,
+                              curBatchSize,
+                              pivot,
+                              barrier
+        );
         if (cursor + curBatchSize == end) break;
         ++i;
         cursor += batchSize;

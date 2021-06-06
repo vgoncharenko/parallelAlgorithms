@@ -26,11 +26,10 @@ private:
     std::atomic<int> count = 0;
     std::atomic<int> lastEventId = 0;
 public:
-    explicit PersistentThreadPool (uint8_t _maxSize)
-            : maxSize(_maxSize) {
-
+    explicit PersistentThreadPool (uint8_t _maxSize,
+                                   size_t threadLocalBufferSize): maxSize(_maxSize) {
         for (int i = 0; i < maxSize; ++i) {
-            auto threadInstance = new PersistentThread(&eventQueue);
+            auto threadInstance = new PersistentThread(&eventQueue, threadLocalBufferSize);
             std::thread t{[threadInstance]{ threadInstance->run(); }};
             threadQueue.push_back(threadInstance);
             threads.push_back(std::move(t));
@@ -45,12 +44,11 @@ public:
 #ifdef MY_DEBUG
         std::printf("Start threadId %d\n", threadId);
 #endif
-        PersistentThreadPoolFuture fut = std::async(std::launch::deferred,
-                              std::forward<F&&>(func),
-                              std::forward<Args&&>(args)...);
         auto event = std::make_shared<ThreadEvent>(
                 eventId,
-                std::make_unique<PersistentThreadSample>(threadId, std::move(fut))
+                std::make_unique<QuickSortPersistentThreadSample>(threadId,
+                                                                  std::forward<F&&>(func),
+                                                                  std::forward<Args&&>(args)...)
         );
         eventQueue.pushEvent(event);
         eventFinishMap[eventId] = event;
