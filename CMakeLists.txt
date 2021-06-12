@@ -20,6 +20,7 @@ add_executable(palgs main.cpp ${SOURCE_FILES} ${INCLUDE_FILES})
 #add_definitions(-DMY_TEST)
 #add_definitions(-DCOUNT_COPIES)
 #add_definitions(-DMY_VECTOR_VERSION)
+#add_definitions(-DMY_ITERATOR_OPTIMIZATIONS)
 #profiling
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")

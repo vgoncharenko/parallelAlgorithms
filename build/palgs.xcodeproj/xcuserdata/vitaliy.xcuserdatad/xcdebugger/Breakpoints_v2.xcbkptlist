@@ -14,58 +14,10 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "437"
-            endingLineNumber = "437"
-            landmarkName = "testQuickSortParallel(vInBegin, n, threadCount)"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
+            landmarkName = "quickSortParallelLocalRearrangement(begin, size, pivot, result, globalResult)"
             landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Sort/QuickSortNaive.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
-            landmarkName = "runThread(f, threadId, args)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - 34f7dd028e5a77e7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), unsigned long, float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)"
-                  moduleName = "palgs"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "333"
-                  endingLineNumber = "333"
-                  offsetFromSymbolStart = "101">
-               </Location>
-               <Location
-                  uuid = "91BDE897-B848-46EB-B7B7-66EA48C70719 - aa1c007f42e8b8a8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "void ThreadPool::runThread&lt;LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;&gt;(LocalRearrangementResult (&amp;)(float*, unsigned long long, float, BlockBarrier*), unsigned long, float*&amp;, int&amp;, float&amp;, BlockBarrier*&amp;)::&apos;lambda&apos;()::operator()() const"
-                  moduleName = "palgs"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/QuickSortNaive.cpp"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "333"
-                  endingLineNumber = "333"
-                  offsetFromSymbolStart = "19">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -78,8 +30,8 @@
             filePath = "Sort/QuickSortNaive.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "409"
+            endingLineNumber = "409"
             landmarkName = "waitForThreads(barrier, args)"
             landmarkType = "7">
          </BreakpointContent>

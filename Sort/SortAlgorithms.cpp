@@ -108,7 +108,7 @@ void sanityCheck()
 void testVectorSort() {
     //sanityCheck();return;
     uint8_t iterations = 1;
-    uint8_t threadsCount = 16;
+    uint8_t threadsCount = 5;
     auto W = new uint64_t[iterations];
 //    W[0] = 1024;
     //W[0] = 8589934592;
@@ -210,20 +210,36 @@ void testVectorSort() {
 
 /**
  * Very memory efficient:
- *      1) N=1073741824 => mem=4.5Gb and Ts=100.321s
+ *      1) N=1073741824 => mem=4Gb and Ts=100.321s
  */
 //        labels[idx] = "Fastest sequential \n";
 //#ifdef MY_TEST
+//    #ifdef MY_VECTOR_VERSION
 //        auto vOutFastestSerial = std::vector<float>(vIn);
+//        auto vInBeginFastestSerial = vOutFastestSerial.begin();
+//    #else
+//        auto vOutFastestSerial = new float [W[i]];
+//        std::copy(vIn, vIn + W[i], vOutFastestSerial);
+//        auto vInBeginFastestSerial = vOutFastestSerial;
+//    #endif
 //#else
+//    #ifdef MY_VECTOR_VERSION
 //        auto vOutFastestSerial = &vIn;
+//        auto vInBeginFastestSerial = vOutFastestSerial.begin();
+//    #else
+//        auto vOutFastestSerial = vIn;
+//        auto vInBeginFastestSerial = vOutFastestSerial;
+//    #endif
+//
 //#endif
-//        measure([&W, &vOutFastestSerial, i] {
-//            std::sort(vOutFastestSerial->begin(), vOutFastestSerial->end());
+//        measure([&W, &vInBeginFastestSerial, i] {
+//            std::sort(vInBeginFastestSerial, vInBeginFastestSerial + W[i]);
 //        }, results[idx++], 1, "seconds", "to_var");
 //#ifdef MY_TEST
 //        verifyVectors(expected, vOutFastestSerial, W[i]);
-////        delete [] vOutFastestSerial;
+//    #ifndef MY_VECTOR_VERSION
+//        delete [] vOutFastestSerial;
+//    #endif
 //#endif
 
 //        labels[idx] = "Quick sequential:\n";
@@ -269,6 +285,7 @@ void testVectorSort() {
          *      vector for localrearrangement result Tp=52.0788s;
          *      poiters everywhere: Tp=43.8582s;
          *      less copies by half: Tp=21.5611s; Copies: 128; NoN Copies: 120
+         *      28.3455s
          *
          *      vector:
          *      0) N=67108864; p=16 => Tp=7.23539s;

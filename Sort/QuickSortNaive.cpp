@@ -261,42 +261,66 @@ void quickSortParallelLocalRearrangement(I begin,
     if (size > resultBufferSize) {
         intermediateFlushPossible = true;
     }
+#ifdef MY_ITERATOR_OPTIMIZATIONS
     uint64_t sCount = 0, lCount = 0;
     uint64_t i = 0;
-    
+#endif
+
     I start = begin;
     I end = start + size;
     auto curS = S;
     auto curL = L;
+#ifdef MY_ITERATOR_OPTIMIZATIONS
     while (i < size) {
+#else
+    while (start < end) {
+#endif
         if (intermediateFlushPossible) {
+#ifdef MY_ITERATOR_OPTIMIZATIONS
             if (sCount == resultBufferSize || lCount == resultBufferSize) {
                 result.s_count = sCount;
                 result.l_count = lCount;
+#else
+            if (curS - S == resultBufferSize || curL - L == resultBufferSize) {
+#endif
+                result.s_count = curS - S;
+                result.l_count = curL - L;
                 quickSortParallelGlobalRearrangement(result, globalResult);
                 result.flushData();
                 curS = S;
                 curL = L;
+#ifdef MY_ITERATOR_OPTIMIZATIONS
                 sCount = 0;
                 lCount = 0;
+#endif
             }
         }
         auto value = *start;
         if (value <= pivot) {
             *curS = value;
             ++curS;
+#ifdef MY_ITERATOR_OPTIMIZATIONS
             ++sCount;
+#endif
         } else {
             *curL = value;
             ++curL;
+#ifdef MY_ITERATOR_OPTIMIZATIONS
             ++lCount;
+#endif
         }
         ++start;
+#ifdef MY_ITERATOR_OPTIMIZATIONS
         ++i;
+#endif
     }
-    
+#ifdef MY_ITERATOR_OPTIMIZATIONS
     result.s_count = sCount;
     result.l_count = lCount;
+#else
+    result.s_count = curS - S;
+    result.l_count = curL - L;
+#endif
 }
 
 struct ThreadSample {
