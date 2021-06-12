@@ -28,22 +28,35 @@ void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
     quickSortParallelGlobalRearrangement(localResult, globalResult);
 }
 
-
+#ifdef COUNT_COPIES
+    static std::atomic<int64_t> copyCounter = 0, nonCopyCounter = 0;
+#endif
 
 void quickSortWithStableThreadPoolParallel(I vInBegin,
                                            const uint64_t n,
                                            std::shared_ptr<PersistentThreadPool> threadPool,
-                                           I bufferBegin){
+                                           I bufferBegin,
+                                           int8_t originFlag){
 #ifdef MY_DEBUG
     std::printf("Start quickSortWithStableThreadPoolParallel N:%llu;\n", n);
 #endif
     if (n <= LOCAL_SORT_MAX_BATCH_SIZE) {
         auto begin = vInBegin;
         std::sort(begin, begin + n);
+        if (originFlag == 0) {
+#ifdef COUNT_COPIES
+            ++copyCounter;
+#endif
+            std::copy(vInBegin, vInBegin + n, bufferBegin);
+        }
+#ifdef COUNT_COPIES
+        else {
+            ++nonCopyCounter;
+        }
+#endif
         return;
     }
     auto pivot = getPivot(vInBegin, n);
-    //auto globalBuffer = bufferBegin;
     auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(bufferBegin, n);
     std::vector<UUID> eventSet;
     
@@ -75,22 +88,16 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
                                              globalRearrangeResult->sBegin,
                                              sSize,
                                              threadPool,
-                                             vInBegin);
+                                             vInBegin,
+                                             originFlag ^ 1);
+    
     quickSortWithStableThreadPoolParallel(globalRearrangeResult->lTail,
                                           n - sSize,
                                           threadPool,
-                                          vInBegin + sSize);
+                                          vInBegin + sSize,
+                                          originFlag ^ 1);
+    
     smallSide.get();
-#ifdef MY_NOT_MOVABLE
-    std::copy(globalRearrangeResult->sBegin, globalRearrangeResult->sBegin + n, vInBegin);
-#else
-//    vInBegin = globalRearrangeResult->sBegin;
-    // TODO: a lot double copies on each recursion back and forth. Better to return the last actual as a ref on result set.
-    std::copy(bufferBegin, bufferBegin + n, vInBegin);
-//    I tmp = bufferBegin;
-//    bufferBegin = vInBegin;
-//    vInBegin = tmp;
-#endif
 #ifdef MY_DEBUG
     std::printf("End quickSortWithStableThreadPoolParallel N:%llu\n", n);
 #endif
@@ -108,7 +115,10 @@ void testQuickSortWithStableThreadPoolParallel(I vInBegin,
 #endif
     uint8_t tCount = threadCount > n/BATCH_SIZE ? n/BATCH_SIZE : threadCount;
     auto threadPool = std::make_shared<PersistentThreadPool>(tCount, LOCAL_SORT_MAX_BATCH_SIZE);
-    quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer);
+    quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer, 1);
+#ifdef COUNT_COPIES
+    std::printf("Copies: %llu\n NoN Copies: %llu\n", copyCounter.load(), nonCopyCounter.load());
+#endif
 }
 
 

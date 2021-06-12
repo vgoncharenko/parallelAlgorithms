@@ -267,7 +267,8 @@ void testVectorSort() {
          *      0) N=67108864; p=16 => Tp=3.79642s;
          *      1) N=1073741824; p=16 => mem=9Gb;
          *      vector for localrearrangement result Tp=52.0788s;
-         *      poiters everuwhere: Tp=43.8582s;
+         *      poiters everywhere: Tp=43.8582s;
+         *      less copies by half: Tp=21.5611s; Copies: 128; NoN Copies: 120
          *
          *      vector:
          *      0) N=67108864; p=16 => Tp=7.23539s;
@@ -279,10 +280,14 @@ void testVectorSort() {
     #ifdef MY_VECTOR_VERSION
         auto vOutQuickPersistentThreadPoolParallel = std::vector<float>(vIn);
         auto vInBegin = vOutQuickPersistentThreadPoolParallel.begin();
+        auto resultBuffer = std::vector<ScalarType>(W[i]);
+        auto resultBufferBegin = resultBuffer.begin();
     #else
         auto vOutQuickPersistentThreadPoolParallel = new float [W[i]];
         std::copy(vIn, vIn + W[i], vOutQuickPersistentThreadPoolParallel);
         auto vInBegin = vOutQuickPersistentThreadPoolParallel;
+        auto resultBuffer = new ScalarType [W[i]];
+        auto resultBufferBegin = resultBuffer;
     #endif
 #else
     #ifdef MY_VECTOR_VERSION
@@ -298,7 +303,10 @@ void testVectorSort() {
         }, results[idx++], 1, "seconds", "to_var");
 #ifdef MY_TEST
         verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);
-        //delete [] vOutQuickPersistentThreadPoolParallel;
+    #ifndef MY_VECTOR_VERSION
+        delete [] vOutQuickPersistentThreadPoolParallel;
+        delete [] resultBuffer;
+    #endif
 #endif
 
     }
