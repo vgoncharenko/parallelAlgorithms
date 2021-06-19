@@ -107,21 +107,16 @@ void sanityCheck()
 
 void testVectorSort() {
     //sanityCheck();return;
-    uint8_t iterations = 1;
-    uint8_t threadsCount = 5;
+    uint8_t iterations = 21;
+    uint8_t threadsCount = 16;
     auto W = new uint64_t[iterations];
-//    W[0] = 1024;
+    W[0] = 1024;
     //W[0] = 8589934592;
 //    W[0] = 2147483648;
-    W[0] = 1073741824;
+//    W[0] = 1073741824;
 //    W[0] = 67108864;
 //    W[0] = 67108;
-//    Fastest sequential
-//    6.10807,
-//    Quick parallel with more threads because of ceil:
-//    1.38042,
-//    Quick parallel with less threads because of round:
-//    1.2775,
+//    W[0] = 33554432;
 
     uint8_t q = 2;
     for (int i = 1; i < iterations; ++i) {
@@ -131,7 +126,6 @@ void testVectorSort() {
     std::vector<std::vector<float>> results(10, std::vector<float>());
     std::vector<std::string> labels(10);
     for (int i = 0; i < iterations; ++i) {
-        //float vIn[] = {10,20,5,9,3,8,12,14,90,0,60,40,23,35,95,18,101,111,115,116,103,105,113,114,106,223,108,1010,117,112,118,119};
         int idx=0;
         auto vIn = getVector(W[i]);
 #ifdef MY_TEST
@@ -146,13 +140,35 @@ void testVectorSort() {
 #endif
 
 //        labels[idx] = "Serial\n";
+//#ifdef MY_TEST
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutSerial = std::vector<float>(vIn);
+//    #else
 //        auto vOutSerial = new float [W[i]];
 //        std::copy(vIn, vIn + W[i], vOutSerial);
+//    #endif
+//#else
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutSerial = &vIn;
+//    #else
+//        auto vOutSerial = vIn;
+//    #endif
+//#endif
+//#ifdef MY_VECTOR_VERSION
+//        auto vInBeginSerial = vOutQuickPersistentThreadPoolParallel.begin();
+//#else
+//        auto vInBeginSerial = vOutSerial;
+//#endif
+//
 //        measure([&W, &vOutSerial, i] {
 //            testBitonicSortSerial(vOutSerial, W[i]);
-//        }, results[idx++], 10, "seconds", "to_var");
+//        }, results[idx++], 1, "seconds", "to_var");
+//#ifdef MY_TEST
 //        verifyVectors(expected, vOutSerial, W[i]);
+//    #ifndef MY_VECTOR_VERSION
 //        delete [] vOutSerial;
+//    #endif
+//#endif
 
 //        labels[idx] = "Bitonic Sort Parallel\n";
 //        auto vOutBitonicParallel = new float [W[i]];
@@ -182,13 +198,34 @@ void testVectorSort() {
 //        delete [] vOutBitonicCompareSplitWithCopyParallel;
 //
 //        labels[idx] = "Bitonic Sort Parallel Compare-Split Optimized\n";
+//#ifdef MY_TEST
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutBitonicCompareSplitParallel = std::vector<float>(vIn);
+//    #else
 //        auto vOutBitonicCompareSplitParallel = new float [W[i]];
 //        std::copy(vIn, vIn + W[i], vOutBitonicCompareSplitParallel);
+//    #endif
+//#else
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutBitonicCompareSplitParallel = &vIn;
+//    #else
+//        auto vOutBitonicCompareSplitParallel = vIn;
+//    #endif
+//#endif
+//#ifdef MY_VECTOR_VERSION
+//        auto vInBeginBitonicCompareSplitParallel = vOutBitonicCompareSplitParallel.begin();
+//#else
+//        auto vInBeginBitonicCompareSplitParallel = vOutBitonicCompareSplitParallel;
+//#endif
 //        measure([&W, &vOutBitonicCompareSplitParallel, threadsCount, i] {
 //            testBitonicSortCompareSplitParallel(vOutBitonicCompareSplitParallel, W[i], threadsCount);
-//        }, results[idx++], 10, "seconds", "to_var");
+//        }, results[idx++], 1, "seconds", "to_var");
+//#ifdef MY_TEST
 //        verifyVectors(expected, vOutBitonicCompareSplitParallel, W[i]);
+//    #ifndef MY_VECTOR_VERSION
 //        delete [] vOutBitonicCompareSplitParallel;
+//    #endif
+//#endif
 
 //        labels[idx] = "Bubble Sort Serial\n";
 //        auto vOutBubbleSerial = new float [W[i]];
@@ -198,15 +235,36 @@ void testVectorSort() {
 //        }, results[idx++], 10, "seconds", "to_var");
 //        verifyVectors(expected, vOutBubbleSerial, W[i]);
 //        delete [] vOutBubbleSerial;
-
+//
 //        labels[idx] = "Bubble Sort Odd-Even Transposition Parallel\n";
+//#ifdef MY_TEST
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutBubbleOddEvenTranspositionParallel = std::vector<float>(vIn);
+//    #else
 //        auto vOutBubbleOddEvenTranspositionParallel = new float [W[i]];
 //        std::copy(vIn, vIn + W[i], vOutBubbleOddEvenTranspositionParallel);
+//    #endif
+//#else
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutBubbleOddEvenTranspositionParallel = &vIn;
+//    #else
+//        auto vOutBubbleOddEvenTranspositionParallel = vIn;
+//    #endif
+//#endif
+//#ifdef MY_VECTOR_VERSION
+//        auto vInBeginBubbleOddEvenTranspositionParallel = vOutBubbleOddEvenTranspositionParallel.begin();
+//#else
+//        auto vInBeginBubbleOddEvenTranspositionParallel = vOutBubbleOddEvenTranspositionParallel;
+//#endif
 //        measure([&W, &vOutBubbleOddEvenTranspositionParallel, i, threadsCount] {
 //            testBubbleOddEvenTranspositionParallel(vOutBubbleOddEvenTranspositionParallel, W[i], threadsCount);
 //        }, results[idx++], 1, "seconds", "to_var");
-//        //verifyVectors(expected, vOutBubbleOddEvenTranspositionParallel, W[i]);
+//#ifdef MY_TEST
+//        verifyVectors(expected, vOutBubbleOddEvenTranspositionParallel, W[i]);
+//    #ifndef MY_VECTOR_VERSION
 //        delete [] vOutBubbleOddEvenTranspositionParallel;
+//    #endif
+//#endif
 
 /**
  * Very memory efficient:
@@ -216,21 +274,22 @@ void testVectorSort() {
 //#ifdef MY_TEST
 //    #ifdef MY_VECTOR_VERSION
 //        auto vOutFastestSerial = std::vector<float>(vIn);
-//        auto vInBeginFastestSerial = vOutFastestSerial.begin();
 //    #else
 //        auto vOutFastestSerial = new float [W[i]];
 //        std::copy(vIn, vIn + W[i], vOutFastestSerial);
-//        auto vInBeginFastestSerial = vOutFastestSerial;
 //    #endif
 //#else
 //    #ifdef MY_VECTOR_VERSION
 //        auto vOutFastestSerial = &vIn;
-//        auto vInBeginFastestSerial = vOutFastestSerial.begin();
 //    #else
 //        auto vOutFastestSerial = vIn;
-//        auto vInBeginFastestSerial = vOutFastestSerial;
 //    #endif
 //
+//#endif
+//#ifdef MY_VECTOR_VERSION
+//        auto vInBeginFastestSerial = vOutFastestSerial.begin();
+//#else
+//        auto vInBeginFastestSerial = vOutFastestSerial;
 //#endif
 //        measure([&W, &vInBeginFastestSerial, i] {
 //            std::sort(vInBeginFastestSerial, vInBeginFastestSerial + W[i]);
@@ -284,47 +343,42 @@ void testVectorSort() {
          *      1) N=1073741824; p=16 => mem=9Gb;
          *      vector for localrearrangement result Tp=52.0788s;
          *      poiters everywhere: Tp=43.8582s;
-         *      less copies by half: Tp=21.5611s; Copies: 128; NoN Copies: 120
-         *      28.3455s
+         *      less copies by half: p=[5; 32]; Preal: ~11CPU; Tp=[21.5611s; 28.3455s]; Copies: 128; NoN Copies: 120
          *
          *      vector:
          *      0) N=67108864; p=16 => Tp=7.23539s;
          *       after deleting barier but with double mem usage: Tp=4.17204s;
          *      1) N=1073741824; p=16 => mem=8.5Gb; Tp=61.1319s;
          */
-        labels[idx] = "Quick parallel with persistent thread pool:\n";
-#ifdef MY_TEST
-    #ifdef MY_VECTOR_VERSION
-        auto vOutQuickPersistentThreadPoolParallel = std::vector<float>(vIn);
-        auto vInBegin = vOutQuickPersistentThreadPoolParallel.begin();
-        auto resultBuffer = std::vector<ScalarType>(W[i]);
-        auto resultBufferBegin = resultBuffer.begin();
-    #else
-        auto vOutQuickPersistentThreadPoolParallel = new float [W[i]];
-        std::copy(vIn, vIn + W[i], vOutQuickPersistentThreadPoolParallel);
-        auto vInBegin = vOutQuickPersistentThreadPoolParallel;
-        auto resultBuffer = new ScalarType [W[i]];
-        auto resultBufferBegin = resultBuffer;
-    #endif
-#else
-    #ifdef MY_VECTOR_VERSION
-        auto vOutQuickPersistentThreadPoolParallel = &vIn;
-        auto vInBegin = vOutQuickPersistentThreadPoolParallel.begin();
-    #else
-        auto vOutQuickPersistentThreadPoolParallel = vIn;
-        auto vInBegin = vOutQuickPersistentThreadPoolParallel;
-    #endif
-#endif
-        measure([&W, vInBegin, i, threadsCount] {
-            testQuickSortWithStableThreadPoolParallel(vInBegin, W[i], threadsCount);
-        }, results[idx++], 1, "seconds", "to_var");
-#ifdef MY_TEST
-        verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);
-    #ifndef MY_VECTOR_VERSION
-        delete [] vOutQuickPersistentThreadPoolParallel;
-        delete [] resultBuffer;
-    #endif
-#endif
+//        labels[idx] = "Quick parallel with persistent thread pool:\n";
+//#ifdef MY_TEST
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutQuickPersistentThreadPoolParallel = std::vector<float>(vIn);
+//    #else
+//        auto vOutQuickPersistentThreadPoolParallel = new float [W[i]];
+//        std::copy(vIn, vIn + W[i], vOutQuickPersistentThreadPoolParallel);
+//    #endif
+//#else
+//    #ifdef MY_VECTOR_VERSION
+//        auto vOutQuickPersistentThreadPoolParallel = &vIn;
+//    #else
+//        auto vOutQuickPersistentThreadPoolParallel = vIn;
+//    #endif
+//#endif
+//#ifdef MY_VECTOR_VERSION
+//        auto vInBeginQuickPersistentThreadPoolParallel = vOutQuickPersistentThreadPoolParallel.begin();
+//#else
+//        auto vInBeginQuickPersistentThreadPoolParallel = vOutQuickPersistentThreadPoolParallel;
+//#endif
+//        measure([&W, vInBeginQuickPersistentThreadPoolParallel, i, threadsCount] {
+//            testQuickSortWithStableThreadPoolParallel(vInBeginQuickPersistentThreadPoolParallel, W[i], threadsCount);
+//        }, results[idx++], 1, "seconds", "to_var");
+//#ifdef MY_TEST
+//        verifyVectors(expected, vOutQuickPersistentThreadPoolParallel, W[i]);
+//    #ifndef MY_VECTOR_VERSION
+//        delete [] vOutQuickPersistentThreadPoolParallel;
+//    #endif
+//#endif
 
     }
 

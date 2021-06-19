@@ -12,7 +12,7 @@
 #include "ThreadPool/PersistentThreadPool.cpp"
 
 const float MAX_ASSIGNET_WORK_ON_THREAD = 1.25;
-const uint64_t BATCH_SIZE = 67108864; //6; //6000000;
+const uint64_t BATCH_SIZE = 134217728; //6; //6000000;
 const uint64_t LOCAL_SORT_MAX_BATCH_SIZE = 8388608; //2; //2000000
 
 void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
@@ -113,7 +113,7 @@ void testQuickSortWithStableThreadPoolParallel(I vInBegin,
     auto globalBuffer = new ScalarType [n];
     auto globalBufferBegin = globalBuffer;
 #endif
-    uint8_t tCount = threadCount > n/BATCH_SIZE ? n/BATCH_SIZE : threadCount;
+    uint8_t tCount = threadCount > ceil(n*1.0/BATCH_SIZE) ? ceil(n*1.0/BATCH_SIZE) : threadCount;
     auto threadPool = std::make_shared<PersistentThreadPool>(tCount, LOCAL_SORT_MAX_BATCH_SIZE);
     quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer, 1);
 #ifdef COUNT_COPIES
