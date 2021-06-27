@@ -106,6 +106,20 @@ void sanityCheck()
 }
 
 void testVectorSort() {
+    int *b = new int[2] {2,5};
+    int *a = &*b;
+    int *c = b;
+    std::cout<< *a << std::endl;
+    *a = 3;
+    std::cout<< *b << std::endl;
+    std::cout<< *c << std::endl;
+    std::cout<< "-----------------------------" << std::endl;
+    std::cout<< *a << std::endl;
+    ++a;
+    std::cout<< *b << std::endl;
+    ++c;
+    std::cout<< *b << std::endl;
+    return;
     //sanityCheck();return;
     uint8_t iterations = 21;
     uint8_t threadsCount = 16;

@@ -15,6 +15,7 @@ const float MAX_ASSIGNET_WORK_ON_THREAD = 1.25;
 const uint64_t BATCH_SIZE = 134217728; //6; //6000000;
 const uint64_t LOCAL_SORT_MAX_BATCH_SIZE = 8388608; //2; //2000000
 
+// O(BATCH_SIZE) + O(n)
 void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
                                                           const uint64_t size,
                                                           ScalarType pivot,
@@ -32,6 +33,11 @@ void quickSortParallelLocalRearrangementWithStoreInGlobal(I begin,
     static std::atomic<int64_t> copyCounter = 0, nonCopyCounter = 0;
 #endif
 
+// split part by taking into account amaunt of recursions
+// O(2^(n/BATCH_SIZE) - 1) * (O((n/BATCH_SIZE)/p) * (O(BATCH_SIZE) + O(n))) = O(2^(n/BATCH_SIZE) - 1) * (O(n/p + (n^2)/(p*BATCH_SIZE)))
+
+// local sort part total runs:
+// + O(n/(p*LOCAL_SORT_MAX_BATCH_SIZE)) * (O(LOCAL_SORT_MAX_BATCH_SIZE*log2(LOCAL_SORT_MAX_BATCH_SIZE)) + O(LOCAL_SORT_MAX_BATCH_SIZE))
 void quickSortWithStableThreadPoolParallel(I vInBegin,
                                            const uint64_t n,
                                            std::shared_ptr<PersistentThreadPool> threadPool,
@@ -40,14 +46,15 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
 #ifdef MY_DEBUG
     std::printf("Start quickSortWithStableThreadPoolParallel N:%llu;\n", n);
 #endif
+    // O(LOCAL_SORT_MAX_BATCH_SIZE*log2(LOCAL_SORT_MAX_BATCH_SIZE)) + O(LOCAL_SORT_MAX_BATCH_SIZE)
     if (n <= LOCAL_SORT_MAX_BATCH_SIZE) {
         auto begin = vInBegin;
-        std::sort(begin, begin + n);
+        std::sort(begin, begin + n); //O(LOCAL_SORT_MAX_BATCH_SIZE*log2(LOCAL_SORT_MAX_BATCH_SIZE))
         if (originFlag == 0) {
 #ifdef COUNT_COPIES
             ++copyCounter;
 #endif
-            std::copy(vInBegin, vInBegin + n, bufferBegin);
+            std::copy(vInBegin, vInBegin + n, bufferBegin); //O(LOCAL_SORT_MAX_BATCH_SIZE)
         }
 #ifdef COUNT_COPIES
         else {
@@ -60,6 +67,7 @@ void quickSortWithStableThreadPoolParallel(I vInBegin,
     auto globalRearrangeResult = std::make_shared<GlobalRearrangementResult>(bufferBegin, n);
     std::vector<UUID> eventSet;
     
+    // O((n/BATCH_SIZE)/p) * (O(BATCH_SIZE) + O(n)) = O(n/p + (n^2)/(p*BATCH_SIZE))
     size_t i = 0;
     auto end = vInBegin + n;
     auto cursor = vInBegin;
@@ -115,6 +123,7 @@ void testQuickSortWithStableThreadPoolParallel(I vInBegin,
 #endif
     uint8_t tCount = threadCount > ceil(n*1.0/BATCH_SIZE) ? ceil(n*1.0/BATCH_SIZE) : threadCount;
     auto threadPool = std::make_shared<PersistentThreadPool>(tCount, LOCAL_SORT_MAX_BATCH_SIZE);
+    // O
     quickSortWithStableThreadPoolParallel(vInBegin, n, threadPool, globalBuffer, 1);
 #ifdef COUNT_COPIES
     std::printf("Copies: %llu\n NoN Copies: %llu\n", copyCounter.load(), nonCopyCounter.load());

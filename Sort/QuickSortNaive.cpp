@@ -222,6 +222,7 @@ LocalRearrangementResult quickSortParallelLocalRearrangement(I begin,
     return result;
 }
 
+// O(n)
 void quickSortParallelGlobalRearrangement(LocalRearrangementResult &localResult,
                                           std::shared_ptr<GlobalRearrangementResult> globalResult){
     if (localResult.s_count > 0) {
@@ -249,6 +250,7 @@ void quickSortParallelGlobalRearrangement(LocalRearrangementResult &localResult,
     }
 }
 
+// O(size)
 void quickSortParallelLocalRearrangement(I begin,
                                          const uint64_t size,
                                          ScalarType pivot,

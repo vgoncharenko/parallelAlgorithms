@@ -6,8 +6,10 @@
 //
 
 #include "Sort/SortAlgorithms.cpp"
+#include "Problems/FindTopNWords.cpp"
 
 int main(int argc, const char * argv[]) {
-    testVectorSort();
+    //testVectorSort();
+    testFindTopNWords();
     return 0;
 }

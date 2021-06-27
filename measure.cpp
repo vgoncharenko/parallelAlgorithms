@@ -4,6 +4,8 @@
 //
 //  Created by Vitaliy on 31.05.2021.
 //
+#ifndef measure_h
+#define measure_h
 
 #include <chrono>
 #include <iostream>
@@ -32,7 +34,7 @@ void measure(Callable f,
     }
     if (outputType == "verbose") {
         std::cout << "Median of time taken by function: "
-                  << elapsedTime << " nanoseconds" << std::endl;
+                  << elapsedTime << " " << timeScale << std::endl;
     } else if (outputType == "nonverbose") {
         std::cout << elapsedTime << ", ";
     } else if (outputType == "to_var") {
@@ -48,3 +50,5 @@ void measure(Callable f,
     std::vector<float> resultBuffer;
     measure(f, resultBuffer, iterations, timeScale, outputType);
 }
+
+#endif /* measure_h */
