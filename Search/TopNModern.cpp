@@ -4,13 +4,13 @@
 //
 //  Created by Vitaliy on 26.06.2021.
 //
-#ifndef TopN_h
-#define TopN_h
+#ifndef TopNModern_h
+#define TopNModern_h
 
 #include <vector>
+#include <string>
 #include <unordered_map>
 #include <queue>
-
 
 class ItemComparator {
 public:
@@ -82,4 +82,4 @@ public:
     }
 };
 
-#endif /* TopN_h */
+#endif /* TopNModern_h */

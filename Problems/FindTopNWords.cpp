@@ -14,12 +14,14 @@
 #include <streambuf>
 #include <utility>
 #include <ctype.h>
-#include "../Search/TopN.cpp"
+#include "../Search/TopNModern.cpp"
+#include "../Search/TopNOld.cpp"
 #include "../measure.cpp"
 
 class FindTopNWords {
 private:
-    TopNModern<std::string> *topNSearch;
+    TopNModern<std::string> *topNSearchModern;
+    TopNOld *topNSearchOld;
     char* buffer;
     
 public:
@@ -27,7 +29,7 @@ public:
         auto start = std::chrono::high_resolution_clock::now();
         //std::cin.sync_with_stdio(false);
         //std::cout.sync_with_stdio(false);
-        topNSearch = new TopNModern<std::string>();
+        topNSearchModern = new TopNModern<std::string>();
         std::ifstream f(filePath, std::ifstream::in);
         // get pointer to associated buffer object
         std::filebuf* pbuf = f.rdbuf();
@@ -48,8 +50,12 @@ public:
         std::cout << "Read file time:" << (duration.count()/1e9) << std::endl;
     }
     
-    std::vector<std::pair<std::string, int>> find_n(int n) {
-        return topNSearch->getTopN(buffer, n);
+    std::vector<std::pair<std::string, int>> find_n_modern(int n) {
+        return topNSearchModern->getTopN(buffer, n);
+    }
+    
+    std::vector<std::pair<char*, int64_t>> find_n_old(int n) {
+        return topNSearchOld->getTopN(buffer, n);
     }
 };
 
@@ -58,12 +64,21 @@ void testFindTopNWords(){
     FindTopNWords f("/Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/data/shakespeare_512Mb.txt");
     int n = 10;
     
-    std::vector<std::pair<std::string, int>> result;
-    measure([&f, n, &result] {
-        result = f.find_n(n);
+    std::vector<std::pair<std::string, int>> resultModern;
+    measure([&f, n, &resultModern] {
+        resultModern = f.find_n_modern(n);
+    }, 1, "seconds", "verbose");
+
+    for (auto it = resultModern.rbegin(); it != resultModern.rend(); ++it) {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
+    
+    std::vector<std::pair<char*, int64_t>> resultOld;
+    measure([&f, n, &resultOld] {
+        resultOld = f.find_n_old(n);
     }, 1, "seconds", "verbose");
     
-    for (auto it = result.rbegin(); it != result.rend(); ++it) {
+    for (auto it = resultOld.begin(); it != resultOld.end(); ++it) {
         std::cout << it->first << " " << it->second << std::endl;
     }
 }

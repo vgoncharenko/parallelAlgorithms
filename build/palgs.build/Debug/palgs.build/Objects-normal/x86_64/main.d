@@ -12,5 +12,6 @@ dependencies: \
   /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/BitonicSort.cpp \
   /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Sort/../measure.cpp \
   /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Problems/FindTopNWords.cpp \
-  /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Problems/../Search/TopN.cpp \
+  /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Problems/../Search/TopNModern.cpp \
+  /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Problems/../Search/TopNOld.cpp \
   /Users/vitaliy/Documents/magento/cpp/parallelAlgorithms/Problems/../measure.cpp
